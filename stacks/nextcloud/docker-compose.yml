@@ -53,13 +53,12 @@ services:
         condition: on-failure
         max_attempts: 3 
 
-# have to replicate dependent network definitions
-# to ensure all nodes are setup correctly.
-# https://docs.docker.com/compose/compose-file/#networks-top-level-element
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
-    driver: overlay
-    attachable: true
+    external: true
 
 # have to replicate dependent volume definitions
 # to ensure all nodes are setup correctly.
