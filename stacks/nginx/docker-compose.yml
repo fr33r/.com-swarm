@@ -1,0 +1,49 @@
+---
+version: "3.3"
+services:
+  proxy:
+    # https://hub.docker.com/_/nginx
+    image: nginx
+    container_name: proxy
+    networks:
+      - freer_network
+    volumes:
+      - freer_nginx_conf_share:/etc/nginx/conf.d
+      - freer_nginx_ssl_share:/ssl
+    ports:
+      - 80:80
+      - 443:443
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+# have to replicate dependent network definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#networks-top-level-element
+networks:
+  freer_network:
+    driver: overlay
+    attachable: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_nginx_conf_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/nginx_conf'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_nginx_ssl_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/nginx_ssl'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'

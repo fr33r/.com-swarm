@@ -1,0 +1,63 @@
+---
+version: "3.3"
+services:
+  plex:
+    # https://hub.docker.com/r/linuxserver/plex
+    image: lscr.io/linuxserver/plex
+    networks:
+      - freer_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+    volumes:
+      - freer_plex_conf_share:/config
+      - freer_photos_share:/photos
+      - freer_movies_share:/movies
+      - freer_tv_share:/tv
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+# have to replicate dependent network definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#networks-top-level-element
+networks:
+  freer_network:
+    driver: overlay
+    attachable: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_plex_conf_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/plex_conf'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_photos_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/photos'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_tv_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/tv'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_movies_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/movies'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'

@@ -1,0 +1,74 @@
+---
+version: "3.3"
+services:
+  db:
+    # https://hub.docker.com/_/mariadb
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+    networks:
+      - freer_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+  app:
+    # https://hub.docker.com/_/nextcloud
+    image: nextcloud
+    ports:
+      - 9999:80
+    depends_on:
+      - db
+    volumes:
+      - freer_nextcloud_share:/var/www/html
+    networks:
+      - freer_network
+    environment:
+      - TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
+      - OVERWRITEHOST=${PROXY_HOST}
+      - OVERWRITEPROTOCOL=https
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=${MYSQL_HOST}
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+# have to replicate dependent network definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#networks-top-level-element
+networks:
+  freer_network:
+    driver: overlay
+    attachable: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_nextcloud_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/nextcloud'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  db:
