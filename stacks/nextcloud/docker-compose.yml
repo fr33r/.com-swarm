@@ -6,7 +6,7 @@ services:
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - db:/var/lib/mysql
+      - freer_nextcloud_db:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -36,7 +36,9 @@ services:
     networks:
       - freer_network
     environment:
-      - TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
+      - NEXTCLOUD_ADMIN_USER=fr33r
+      - NEXTCLOUD_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -70,4 +72,4 @@ volumes:
       type: cifs
       device: '//192.168.1.2/nextcloud'
       o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
-  db:
+  freer_nextcloud_db:
