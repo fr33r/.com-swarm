@@ -11,10 +11,11 @@ services:
       - PGID=1000
       - VERSION=docker
     volumes:
-      - freer_plex_conf_share:/config
+      - freer_plex_conf:/config
       - freer_photos_share:/photos
       - freer_movies_share:/movies
       - freer_tv_share:/tv
+      - freer_music_share:/music
     deploy:
       mode: replicated
       replicas: 1
@@ -36,12 +37,7 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_plex_conf_share:
-    driver: local
-    driver_opts:
-      type: cifs
-      device: '//192.168.1.2/plex_conf'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_plex_conf:
   freer_photos_share:
     driver: local
     driver_opts:
@@ -59,4 +55,10 @@ volumes:
     driver_opts:
       type: cifs
       device: '//192.168.1.2/movies'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+  freer_music_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/music'
       o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'

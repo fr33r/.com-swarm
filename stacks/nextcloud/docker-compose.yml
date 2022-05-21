@@ -6,7 +6,7 @@ services:
     image: mariadb
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - freer_nextcloud_db:/var/lib/mysql
+      - freer_nextcloud_db_nfs:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -32,12 +32,10 @@ services:
     depends_on:
       - db
     volumes:
-      - freer_nextcloud_share:/var/www/html
+      - freer_nextcloud_nfs:/var/www/html
     networks:
       - freer_network
     environment:
-      - NEXTCLOUD_ADMIN_USER=fr33r
-      - NEXTCLOUD_ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
@@ -66,10 +64,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nextcloud_share:
+  freer_nextcloud_nfs:
     driver: local
     driver_opts:
-      type: cifs
-      device: '//192.168.1.2/nextcloud'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
-  freer_nextcloud_db:
+      type: nfs
+      device: ':/home/jon/nfs/exports/nextcloud'
+      o: 'addr=192.168.1.2,rw'
+  freer_nextcloud_db_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/nextcloud_db'
+      o: 'addr=192.168.1.2,rw'
