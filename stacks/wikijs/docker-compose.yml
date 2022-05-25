@@ -1,0 +1,50 @@
+---
+version: "3.3"
+services:
+  wikijs:
+    # https://hub.docker.com/r/linuxserver/wikijs
+    image: lscr.io/linuxserver/wikijs:latest
+    networks:
+      - freer_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - freer_wikijs_conf_nfs:/config
+      - freer_wikijs_data_nfs:/data
+    ports:
+      - 3000:3000
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_wikijs_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/wikijs_conf'
+      o: 'addr=192.168.1.2,rw'
+  freer_wikijs_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/wikijs_data'
+      o: 'addr=192.168.1.2,rw'
