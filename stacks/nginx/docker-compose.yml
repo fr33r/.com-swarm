@@ -4,7 +4,6 @@ services:
   proxy:
     # https://hub.docker.com/_/nginx
     image: nginx
-    container_name: proxy
     networks:
       - freer_network
     volumes:
