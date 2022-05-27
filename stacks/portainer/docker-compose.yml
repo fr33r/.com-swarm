@@ -1,0 +1,52 @@
+version: '3.2'
+
+# derived from https://docs.portainer.io/v/ce-2.9/start/install/server/swarm/linux.
+services:
+  agent:
+    image: portainer/agent:2.11.1
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - agent_network
+      - freer_network
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+  portainer:
+    image: portainer/portainer-ce:2.11.1
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    volumes:
+      - portainer_data_nfs:/data
+    networks:
+      - agent_network
+      - freer_network
+    ports:
+      - "9443:9443"
+      - "9000:9000"
+      - "8000:8000"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  agent_network:
+    driver: overlay
+    attachable: true
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  portainer_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/portainer'
+      o: 'addr=192.168.1.2,rw'
