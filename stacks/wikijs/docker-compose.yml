@@ -13,8 +13,6 @@ services:
     volumes:
       - freer_wikijs_conf_nfs:/config
       - freer_wikijs_data_nfs:/data
-    ports:
-      - 3000:3000
     deploy:
       mode: replicated
       replicas: 1

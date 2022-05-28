@@ -1,6 +1,7 @@
 ---
 version: "3.3"
-
+# https://prometheus.io/docs/guides/dockerswarm/
+# should look into this ^.
 services:
   prometheus:
     image: prom/prometheus:latest

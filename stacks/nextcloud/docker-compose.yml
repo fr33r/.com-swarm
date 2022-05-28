@@ -27,8 +27,6 @@ services:
   app:
     # https://hub.docker.com/_/nextcloud
     image: nextcloud
-    ports:
-      - 9999:80
     depends_on:
       - db
     volumes:
