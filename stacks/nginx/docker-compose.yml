@@ -35,10 +35,10 @@ volumes:
     driver_opts:
       type: cifs
       device: '//192.168.1.2/nginx_conf'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
   freer_nginx_ssl_share:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.2/nginx_ssl'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
