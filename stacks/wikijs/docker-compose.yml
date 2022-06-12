@@ -36,10 +36,10 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/home/jon/nfs/exports/wikijs_conf'
-      o: 'addr=192.168.1.2,rw'
+      o: 'addr=192.168.1.2'
   freer_wikijs_data_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/home/jon/nfs/exports/wikijs_data'
-      o: 'addr=192.168.1.2,rw'
+      o: 'addr=192.168.1.2'
