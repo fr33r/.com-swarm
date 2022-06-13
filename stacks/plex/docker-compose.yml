@@ -49,22 +49,22 @@ volumes:
     driver_opts:
       type: cifs
       device: '//192.168.1.2/photos'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
   freer_tv_share:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.2/tv'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
   freer_movies_share:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.2/movies'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
   freer_music_share:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.2/music'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD},file_mode=0777,dir_mode=0777'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
