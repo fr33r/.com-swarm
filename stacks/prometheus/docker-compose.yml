@@ -5,6 +5,7 @@ version: "3.3"
 services:
   prometheus:
     image: prom/prometheus:latest
+    user: root
     networks:
       - freer_network
     volumes:
