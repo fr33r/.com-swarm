@@ -2,7 +2,7 @@
 version: '3.3'
 
 services:
-  cadvisor-arm:
+  app:
     # https://github.com/oijkn/Docker-Raspberry-PI-Monitoring/blob/main/docker-compose.yml
     image: zcube/cadvisor:v0.38.8
     privileged: true

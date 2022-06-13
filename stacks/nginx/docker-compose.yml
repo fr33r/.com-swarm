@@ -1,7 +1,7 @@
 ---
 version: "3.3"
 services:
-  proxy:
+  app:
     # https://hub.docker.com/_/nginx
     image: nginx
     networks:

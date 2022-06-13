@@ -3,7 +3,7 @@ version: "3.3"
 # https://prometheus.io/docs/guides/dockerswarm/
 # should look into this ^.
 services:
-  prometheus:
+  app:
     image: prom/prometheus:latest
     user: root
     networks:
