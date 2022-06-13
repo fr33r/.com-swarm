@@ -5,17 +5,21 @@ services:
   node_exporter:
     # https://github.com/prometheus/node_exporter
     image: quay.io/prometheus/node-exporter:latest
+    networks:
+      - freer_network
     command:
       - '--path.rootfs=/host'
-    pid: host
     deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints:
-          - node.hostname == red
+      mode: global
       restart_policy:
         condition: on-failure
         max_attempts: 3 
     volumes:
       - '/:/host:ro,rslave'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
