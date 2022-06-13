@@ -10,6 +10,7 @@ services:
       - freer_network
     volumes:
       - freer_prometheus_conf_nfs:/etc/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
       replicas: 1
