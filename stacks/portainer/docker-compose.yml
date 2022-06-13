@@ -21,10 +21,6 @@ services:
       - portainer_data_nfs:/data
     networks:
       - freer_network
-    ports:
-      - "9443:9443"
-      - "9000:9000"
-      - "8000:8000"
     deploy:
       mode: replicated
       replicas: 1
