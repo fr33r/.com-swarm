@@ -12,7 +12,7 @@ services:
       - VERSION=docker
       - PLEX_CLAIM=claim-5YyMzUkVz4Tvssvwg1mX
     volumes:
-      - freer_plex_conf:/config
+      - freer_plex_conf_nfs:/config
       - freer_photos_share:/photos
       - freer_movies_share:/movies
       - freer_tv_share:/tv
@@ -38,7 +38,12 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_plex_conf:
+  freer_plex_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/plex_conf'
+      o: 'addr=192.168.1.2'
   freer_photos_share:
     driver: local
     driver_opts:
