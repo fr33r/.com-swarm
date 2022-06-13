@@ -1,0 +1,31 @@
+---
+version: '3.3'
+
+services:
+  cadvisor-arm:
+    # https://github.com/oijkn/Docker-Raspberry-PI-Monitoring/blob/main/docker-compose.yml
+    image: zcube/cadvisor:v0.38.8
+    privileged: true
+    command: -logtostderr -docker_only --disable_metrics=hugetlb
+    networks:
+      - freer_network
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
