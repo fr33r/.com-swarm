@@ -3,12 +3,15 @@ version: "3.3"
 
 services:
   node_exporter:
-    # https://github.com/prometheus/node_exporter
-    image: quay.io/prometheus/node-exporter:latest
+    # https://github.com/stefanprodan/swarmprom/blob/master/docker-compose.yml
+    image: fr33r/swarm-node-exporter:v1.3.1
     networks:
       - freer_network
+    environment:
+      - NODE_ID={{.Node.ID}}
     command:
       - '--path.rootfs=/host'
+      - '--collector.textfile.directory=/etc/node-exporter/'
     deploy:
       mode: global
       restart_policy:
@@ -16,6 +19,7 @@ services:
         max_attempts: 3 
     volumes:
       - '/:/host:ro,rslave'
+      - '/etc/hostname:/etc/nodename'
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
