@@ -3,7 +3,7 @@ version: "3.3"
 services:
   app:
     # https://hub.docker.com/r/linuxserver/wikijs
-    image: lscr.io/linuxserver/wikijs:latest
+    image: linuxserver/wikijs:latest
     networks:
       - freer_network
     environment:
