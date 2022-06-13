@@ -10,6 +10,7 @@ services:
       - PUID=1000
       - PGID=1000
       - VERSION=docker
+      - PLEX_CLAIM=claim-5YyMzUkVz4Tvssvwg1mX
     volumes:
       - freer_plex_conf:/config
       - freer_photos_share:/photos
