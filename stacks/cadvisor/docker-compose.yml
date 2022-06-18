@@ -25,7 +25,7 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://logstash_app:12201'
+        gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
 
 # have to reference external network, otherwise a new scoped network is

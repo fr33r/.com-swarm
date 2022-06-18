@@ -16,7 +16,7 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://logstash_app:12201'
+        gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
 
   app:
@@ -26,6 +26,8 @@ services:
       - portainer_data_nfs:/data
     networks:
       - freer_network
+    ports:
+      - 9000:9000
     deploy:
       mode: replicated
       replicas: 1
@@ -37,7 +39,7 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://logstash_app:12201'
+        gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
 
 networks:
