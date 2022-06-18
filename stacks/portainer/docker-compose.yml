@@ -17,7 +17,7 @@ services:
       driver: gelf
       options:
         gelf-address: 'udp://logstash_app:12201'
-        tag: {{.Name}}
+        tag: '{{.Name}}'
 
   app:
     image: portainer/portainer-ce:2.11.1
@@ -38,7 +38,7 @@ services:
       driver: gelf
       options:
         gelf-address: 'udp://logstash_app:12201'
-        tag: {{.Name}}
+        tag: '{{.Name}}'
 
 networks:
   freer_network:
