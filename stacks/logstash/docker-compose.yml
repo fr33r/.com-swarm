@@ -9,6 +9,8 @@ services:
     volumes:
       - freer_logstash_conf_nfs:/etc/logstash
     command: 'logstash -f /etc/logstash/logstash.conf'
+    ports:
+      - 12201:12201/udp
     deploy:
       mode: replicated
       replicas: 1
