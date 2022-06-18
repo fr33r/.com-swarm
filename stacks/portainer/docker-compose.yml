@@ -13,6 +13,11 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://logstash_app:12201'
+        tag: {{.Name}}
 
   app:
     image: portainer/portainer-ce:2.11.1
@@ -29,6 +34,11 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://logstash_app:12201'
+        tag: {{.Name}}
 
 networks:
   freer_network:

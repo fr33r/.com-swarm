@@ -21,6 +21,11 @@ services:
         max_attempts: 3
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://logstash_app:12201'
+        tag: {{.Name}}
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
