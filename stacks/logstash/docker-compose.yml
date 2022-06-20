@@ -7,7 +7,7 @@ services:
     networks:
       - freer_network
     volumes:
-      - freer_logstash_pipeline_conf_nfs:/etc/logstash/pipeline
+      - freer_logstash_pipeline_conf_nfs:/usr/share/logstash/pipeline
       - freer_elasticsearch_certs_nfs:/etc/logstash/config/certs
     ports:
       - 12201:12201/udp
