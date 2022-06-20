@@ -7,6 +7,12 @@ services:
     volumes:
       - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
     user: "0"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
     command: >
       bash -c '
         if [ x${ELASTIC_PASSWORD} == x ]; then
