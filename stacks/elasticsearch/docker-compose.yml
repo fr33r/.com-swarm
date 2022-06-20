@@ -3,11 +3,19 @@ version: '3.3'
 
 services:
   app:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.2.3
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     networks:
       - freer_network
+    volumes:
+      - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
+      - freer_elasticsearch_conf_nfs:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
+      - ES_JAVA_OPTS="-Xms1g -Xmx1g"
+      - node.name=elasticsearch_app
+      - cluster.name=${CLUSTER_NAME}
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - xpack.license.self_generated.type=${LICENSE}
     deploy:
       mode: replicated
       replicas: 1
@@ -17,6 +25,20 @@ services:
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
+    mem_limit: ${MEM_LIMIT}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
         
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
@@ -24,3 +46,20 @@ services:
 networks:
   freer_network:
     external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_elasticsearch_certs_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/elasticsearch_certs'
+      o: 'addr=192.168.1.2'
+  freer_elasticsearch_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/elasticsearch_conf'
+      o: 'addr=192.168.1.2'

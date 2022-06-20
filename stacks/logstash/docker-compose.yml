@@ -3,12 +3,12 @@ version: '3.3'
 
 services:
   app:
-    image: docker.elastic.co/logstash/logstash:8.2.3
+    image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
     networks:
       - freer_network
     volumes:
-      - freer_logstash_conf_nfs:/etc/logstash
-    command: 'logstash -f /etc/logstash/logstash.conf'
+      - freer_logstash_pipeline_conf_nfs:/etc/logstash/pipeline
+      - freer_elasticsearch_certs_nfs:/etc/logstash/config/certs
     ports:
       - 12201:12201/udp
     deploy:
@@ -29,9 +29,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_logstash_conf_nfs:
+  freer_logstash_pipeline_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/logstash_conf'
+      device: ':/home/jon/nfs/exports/logstash_pipeline_conf'
+      o: 'addr=192.168.1.2'
+  freer_elasticsearch_certs_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/elasticsearch_certs'
       o: 'addr=192.168.1.2'
