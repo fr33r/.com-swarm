@@ -9,6 +9,7 @@ services:
     volumes:
       - freer_logstash_pipeline_conf_nfs:/usr/share/logstash/pipeline
       - freer_elasticsearch_certs_nfs:/etc/logstash/config/certs
+    command: 'logstash -f /usr/share/logstash/pipeline/logstash.conf'
     ports:
       - 12201:12201/udp
     deploy:
