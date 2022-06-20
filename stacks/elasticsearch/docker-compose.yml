@@ -4,6 +4,7 @@ version: '3.3'
 services:
   app:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    user: "0"
     networks:
       - freer_network
     volumes:
