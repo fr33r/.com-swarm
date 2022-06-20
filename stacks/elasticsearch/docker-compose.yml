@@ -11,7 +11,6 @@ services:
       - freer_elasticsearch_conf_nfs:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS="-Xms1g -Xmx1g"
       - node.name=elasticsearch_app
       - cluster.name=${CLUSTER_NAME}
       - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
