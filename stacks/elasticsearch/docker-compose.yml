@@ -6,6 +6,8 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
+    networks:
+      - freer_network
     user: "0"
     deploy:
       mode: replicated
