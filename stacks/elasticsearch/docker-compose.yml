@@ -62,7 +62,9 @@ services:
   app:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     networks:
-      - freer_network
+      freer_network:
+        aliases:
+          - ${ELASTICSEARCH_HOST}
     volumes:
       - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
       - freer_elasticsearch_conf_nfs:/usr/share/elasticsearch/data
