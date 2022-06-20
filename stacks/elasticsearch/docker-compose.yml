@@ -25,7 +25,9 @@ services:
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
-    mem_limit: ${MEM_LIMIT}
+      resources:
+        limits:
+          memory: 1gb
     ulimits:
       memlock:
         soft: -1
