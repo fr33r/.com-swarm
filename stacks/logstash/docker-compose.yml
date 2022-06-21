@@ -10,6 +10,13 @@ services:
       - freer_logstash_pipeline_conf_nfs:/usr/share/logstash/pipeline
       - freer_elasticsearch_certs_nfs:/etc/logstash/config/certs
     command: 'logstash -f /usr/share/logstash/pipeline/logstash.conf'
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.monitoring.elasticsearch.hosts=https://${ELASTICSEARCH_HOST}:9200
+      - xpack.monitoring.elasticsearch.ssl.certificate_authority=/etc/logstash/config/certs/ca/ca.crt
+      - xpack.monitoring.elasticsearch.sniffing=true
+      - xpack.monitoring.collection.interval=10s
+      - xpack.monitoring.collection.pipeline.details.enabled=true
     ports:
       - 12201:12201/udp
     deploy:
