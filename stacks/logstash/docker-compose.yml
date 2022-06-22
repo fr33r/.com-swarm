@@ -14,6 +14,8 @@ services:
       - xpack.monitoring.enabled=true
       - xpack.monitoring.elasticsearch.hosts=https://${ELASTICSEARCH_HOST}:9200
       - xpack.monitoring.elasticsearch.ssl.certificate_authority=/etc/logstash/config/certs/ca/ca.crt
+      - xpack.monitoring.elasticsearch.username=${LOGSTASH_USER}
+      - xpack.monitoring.elasticsearch.password=${LOGSTASH_PASSWORD}
       - xpack.monitoring.collection.interval=10s
       - xpack.monitoring.collection.pipeline.details.enabled=true
     ports:
