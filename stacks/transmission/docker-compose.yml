@@ -13,9 +13,9 @@ services:
       - USER=${USERNAME}
       - PASS=${PASSWORD}
     volumes:
-      - /path/to/data:/config
-      - /path/to/downloads:/downloads
-      - /path/to/watch/folder:/watch
+      - freer_transmission_conf_nfs:/config
+      - freer_torrent_downloads_nfs:/downloads
+      - freer_transmission_watch_nfs:/watch
     ports:
       - 9091:9091
       - 51413:51413
@@ -49,13 +49,19 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_jackett_conf_nfs:
+  freer_transmission_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/home/jon/nfs/exports/transmission_conf'
       o: 'addr=192.168.1.2'
-  freer_jackett_downloads_nfs:
+  freer_transmission_watch_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/transmission_watch'
+      o: 'addr=192.168.1.2'
+  freer_torrent_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
