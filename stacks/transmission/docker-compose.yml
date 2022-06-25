@@ -1,0 +1,63 @@
+---
+version: "3.3"
+services:
+  app:
+    image: lscr.io/linuxserver/transmission:latest
+    networks:
+      - freer_network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+      - USER=${USERNAME}
+      - PASS=${PASSWORD}
+    volumes:
+      - /path/to/data:/config
+      - /path/to/downloads:/downloads
+      - /path/to/watch/folder:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+      resources:
+        limits:
+          memory: 512mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_jackett_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/transmission_conf'
+      o: 'addr=192.168.1.2'
+  freer_jackett_downloads_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/torrent_downloads'
+      o: 'addr=192.168.1.2'
