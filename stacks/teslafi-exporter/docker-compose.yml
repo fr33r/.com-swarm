@@ -5,6 +5,8 @@ services:
   app:
     # https://github.com/neredera/teslafi_exporter
     image: neredera/teslafi-exporter:latest
+    networks:
+      - freer_network
     command: "--teslafi_api_token ${API_TOKEN}"
     deploy:
       mode: replicated
