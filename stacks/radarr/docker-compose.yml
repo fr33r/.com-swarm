@@ -1,0 +1,60 @@
+---
+version: "3.3"
+services:
+  app:
+    # https://hub.docker.com/r/linuxserver/radarr
+    image: linuxserver/radarr:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+    volumes:
+      - freer_radarr_conf_nfs:/config
+      - freer_movies_share:/movies
+      - freer_torrent_downloads_nfs:/downloads
+    ports:
+      - 7878:7878
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == red
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://logstash_app:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_radarr_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/radarr_conf'
+      o: 'addr=192.168.1.2'
+  freer_torrent_downloads_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/torrent_downloads'
+      o: 'addr=192.168.1.2'
+  freer_movies_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/movies'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
