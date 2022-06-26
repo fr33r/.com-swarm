@@ -3,7 +3,7 @@ version: "3.3"
 services:
   app:
     image: lscr.io/linuxserver/transmission:latest
-    network_mode: service:gluetun_app
+    network_mode: service:vpn
     networks:
       - freer_network
     environment:
@@ -29,6 +29,29 @@ services:
       resources:
         limits:
           memory: 512mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+  vpn:
+    image: qmcgaw/gluetun
+    networks:
+      - freer_network
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - VPN_SERVICE_PROVIDER=nordvpn
+      - OPENVPN_USER=${VPN_USERNAME}
+      - OPENVPN_PASSWORD=${VPN_PASSWORD}
+      - SERVER_REGIONS=Netherlands
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
     logging:
       driver: gelf
       options:
