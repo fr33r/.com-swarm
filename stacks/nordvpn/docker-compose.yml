@@ -1,0 +1,30 @@
+---
+version: "3"
+services:
+  app:
+    # https://github.com/bubuntux/nordvpn
+    image: ghcr.io/bubuntux/nordvpn
+    networks:
+      - freer_network
+    cap_add:
+      - NET_ADMIN                # Required
+      - NET_RAW                  # Required
+    environment:                 # Review https://github.com/bubuntux/nordvpn#environment-variables
+      - USER=${NORDVPN_USERNAME} # Required
+      - PASS=${NORDVPN_PASSWORD} # Required
+      - CONNECT=United_States
+      - TECHNOLOGY=NordLynx
+      - NETWORK=192.168.1.0/24   # So it can be accessed within the local network
+    ports:
+      - 9117:9117 # jackett.
+      - 7878:7878 # radarr.
+      - 9091:9091 # transmission.
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1  # Recomended if using ipv4 only
+      
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
