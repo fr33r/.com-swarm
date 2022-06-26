@@ -4,9 +4,6 @@ services:
   app:
     # https://hub.docker.com/r/linuxserver/radarr
     image: linuxserver/radarr:latest
-    network_mode: service:nordvpn_app
-    networks:
-      - freer_network
     environment:
       - PUID=1000
       - PGID=1000
