@@ -4,6 +4,8 @@ services:
   app:
     # https://hub.docker.com/r/linuxserver/radarr
     image: linuxserver/radarr:latest
+    networks:
+      - freer_network
     environment:
       - PUID=1000
       - PGID=1000
