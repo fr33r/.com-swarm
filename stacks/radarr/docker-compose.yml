@@ -14,6 +14,8 @@ services:
       - freer_radarr_conf_nfs:/config
       - freer_movies_share:/movies
       - freer_torrent_downloads_nfs:/downloads
+    ports:
+      - 7878:7878
     deploy:
       mode: replicated
       replicas: 1

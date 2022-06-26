@@ -12,6 +12,8 @@ services:
     volumes:
       - freer_jackett_conf_nfs:/config
       - freer_torrent_downloads_nfs:/downloads
+    ports:
+      - 9117:9117
     deploy:
       mode: replicated
       replicas: 1
