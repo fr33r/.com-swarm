@@ -3,7 +3,7 @@ version: "3.3"
 services:
   app:
     image: lscr.io/linuxserver/transmission:latest
-    network_mode: service:nordvpn_app
+    network_mode: service:gluetun_app
     networks:
       - freer_network
     environment:
