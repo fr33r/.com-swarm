@@ -3,6 +3,7 @@ version: "3.3"
 services:
   app:
     image: lscr.io/linuxserver/transmission:latest
+    network_mode: service:nordvpn_app
     networks:
       - freer_network
     environment:
@@ -16,10 +17,6 @@ services:
       - freer_transmission_conf_nfs:/config
       - freer_torrent_downloads_nfs:/downloads
       - freer_transmission_watch_nfs:/watch
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
     deploy:
       mode: replicated
       replicas: 1

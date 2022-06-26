@@ -4,6 +4,9 @@ services:
   app:
     # https://hub.docker.com/r/linuxserver/radarr
     image: linuxserver/radarr:latest
+    network_mode: service:nordvpn_app
+    networks:
+      - freer_network
     environment:
       - PUID=1000
       - PGID=1000
@@ -12,8 +15,6 @@ services:
       - freer_radarr_conf_nfs:/config
       - freer_movies_share:/movies
       - freer_torrent_downloads_nfs:/downloads
-    ports:
-      - 7878:7878
     deploy:
       mode: replicated
       replicas: 1
