@@ -11,7 +11,7 @@ services:
       - TZ=America/Los_Angeles
     volumes:
       - freer_jackett_conf_nfs:/config
-      - freer_torrent_downloads_nfs:/downloads
+      - freer_media_downloads_nfs:/downloads
     ports:
       - 9117:9117
     deploy:
@@ -49,9 +49,9 @@ volumes:
       type: nfs
       device: ':/home/jon/nfs/exports/jackett_conf'
       o: 'addr=192.168.1.2'
-  freer_torrent_downloads_nfs:
+  freer_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/torrent_downloads'
+      device: ':/home/jon/nfs/exports/media_downloads'
       o: 'addr=192.168.1.2'

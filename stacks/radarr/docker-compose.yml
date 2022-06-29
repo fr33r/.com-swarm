@@ -13,7 +13,7 @@ services:
     volumes:
       - freer_radarr_conf_nfs:/config
       - freer_movies_share:/movies
-      - freer_torrent_downloads_nfs:/downloads
+      - freer_media_downloads_nfs:/downloads
     ports:
       - 7878:7878
     deploy:
@@ -48,11 +48,11 @@ volumes:
       type: nfs
       device: ':/home/jon/nfs/exports/radarr_conf'
       o: 'addr=192.168.1.2'
-  freer_torrent_downloads_nfs:
+  freer_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/torrent_downloads'
+      device: ':/home/jon/nfs/exports/media_downloads'
       o: 'addr=192.168.1.2'
   freer_movies_share:
     driver: local

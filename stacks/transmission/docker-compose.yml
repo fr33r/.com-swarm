@@ -14,7 +14,7 @@ services:
       - PASS=${PASSWORD}
     volumes:
       - freer_transmission_conf_nfs:/config
-      - freer_torrent_downloads_nfs:/downloads
+      - freer_media_downloads_nfs:/downloads
       - freer_transmission_watch_nfs:/watch
     deploy:
       mode: replicated
@@ -57,9 +57,9 @@ volumes:
       type: nfs
       device: ':/home/jon/nfs/exports/transmission_watch'
       o: 'addr=192.168.1.2'
-  freer_torrent_downloads_nfs:
+  freer_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/torrent_downloads'
+      device: ':/home/jon/nfs/exports/media_downloads'
       o: 'addr=192.168.1.2'
