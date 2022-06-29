@@ -10,8 +10,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Los_Angeles
-      - NZBGET_USER=nzbget #optional
-      - NZBGET_PASS=tegbzn6789 #optional
+      - NZBGET_USER=${USERNAME}
+      - NZBGET_PASS=${PASSWORD}
     volumes:
       - /path/to/data:/config
       - /path/to/downloads:/downloads #optional
