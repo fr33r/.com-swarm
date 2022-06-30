@@ -19,6 +19,9 @@ services:
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
+      placement:
+        constraints:
+          - node.hostname == red
       resources:
         limits:
           memory: 512mb
