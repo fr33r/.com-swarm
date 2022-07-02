@@ -13,9 +13,6 @@ services:
       - NZBGET_USER=${USERNAME}
       - NZBGET_PASS=${PASSWORD}
     volumes:
-      - /path/to/data:/config
-      - /path/to/downloads:/downloads #optional
-    volumes:
       - freer_nzbget_conf_nfs:/config
       - freer_media_downloads_nfs:/downloads
     ports:
