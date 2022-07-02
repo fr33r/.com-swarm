@@ -10,6 +10,7 @@ services:
       - freer_network
     volumes:
       - freer_prometheus_conf_nfs:/etc/prometheus
+      - freer_prometheus_data_nfs:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
@@ -48,4 +49,10 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/home/jon/nfs/exports/prometheus_conf'
+      o: 'addr=192.168.1.2'
+  freer_prometheus_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/prometheus_data'
       o: 'addr=192.168.1.2'
