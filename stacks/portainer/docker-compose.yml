@@ -16,6 +16,8 @@ services:
       resources:
         limits:
           memory: 32mb
+        reservations:
+          memory: 32mb
     logging:
       driver: gelf
       options:
@@ -42,6 +44,8 @@ services:
       resources:
         limits:
           memory: 128mb
+        reservations:
+          memory: 64mb
     logging:
       driver: gelf
       options:

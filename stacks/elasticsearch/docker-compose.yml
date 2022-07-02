@@ -98,6 +98,8 @@ services:
       resources:
         limits:
           memory: 1gb
+        reservations:
+          memory: 1gb
     ulimits:
       memlock:
         soft: -1

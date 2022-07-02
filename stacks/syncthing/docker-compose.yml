@@ -25,6 +25,8 @@ services:
       resources:
         limits:
           memory: 512mb
+        reservations:
+          memory: 64mb
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.

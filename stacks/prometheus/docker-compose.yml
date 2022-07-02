@@ -22,6 +22,8 @@ services:
       resources:
         limits:
           memory: 256mb
+        reservations:
+          memory: 128mb
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     logging:

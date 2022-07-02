@@ -20,6 +20,8 @@ services:
       resources:
         limits:
           memory: 32mb
+        reservations:
+          memory: 32mb
     volumes:
       - '/:/host:ro,rslave'
       - '/etc/hostname:/etc/nodename'
