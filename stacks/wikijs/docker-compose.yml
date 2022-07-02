@@ -19,6 +19,9 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3 
+      resources:
+        limits:
+          memory: 128mb
     logging:
       driver: gelf
       options:

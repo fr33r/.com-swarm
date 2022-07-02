@@ -19,6 +19,9 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
+      resources:
+        limits:
+          memory: 256mb
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     logging:

@@ -13,6 +13,9 @@ services:
       mode: global
       placement:
         constraints: [node.platform.os == linux]
+      resources:
+        limits:
+          memory: 32mb
     logging:
       driver: gelf
       options:
@@ -36,6 +39,9 @@ services:
       restart_policy:
         condition: on-failure
         max_attempts: 3
+      resources:
+        limits:
+          memory: 128mb
     logging:
       driver: gelf
       options:
