@@ -17,6 +17,10 @@ services:
       - freer_movies_share:/movies
       - freer_tv_share:/tv
       - freer_music_share:/music
+      - /dev/shm:/transcode
+    # https://docs.linuxserver.io/images/docker-plex#hardware-acceleration
+    devices:
+      - /dev/dri:/dev/dri
     deploy:
       mode: replicated
       replicas: 1
