@@ -1,0 +1,254 @@
+---
+version: "3.3"
+services:
+  app:
+    # https://docs.linuxserver.io/images/docker-duplicati
+    image: lscr.io/linuxserver/duplicati:latest
+    networks:
+      - freer_network
+    environment:
+      - PUID=0 # root
+      - PGID=0 # root
+      - TZ=America/Los_Angeles
+    volumes:
+      - freer_duplicati_conf_nfs:/config
+        # backup volumes.
+      - freer_photo_backups_nfs:/backups/photos
+      - freer_movie_backups_nfs:/backups/movies
+      - freer_tv_backups_nfs:/backups/tv
+      - freer_music_backups_nfs:/backups/music
+      - freer_app_backups_nfs:/backups/app
+      - freer_db_backups_nfs:/backups/db
+        # source volumes.
+      - freer_photos_share:/sources/photos
+      - freer_movies_share:/sources/movies
+      - freer_music_share:/sources/music
+      - freer_tv_share:/sources/tv
+      - freer_plex_conf_nfs:/sources/plex/configuration
+      - freer_wikijs_conf_nfs:/sources/wikijs/configuration
+      - freer_wikijs_data_nfs:/sources/wikijs/data
+      - freer_radarr_conf_nfs:/sources/radarr/configuration
+      - freer_elasticsearch_certs_nfs:/sources/elasticsearch/certs
+      - freer_elasticsearch_conf_nfs:/sources/elasticsearch/configuration
+      - freer_grafana_conf_nfs:/sources/grafana/configuration
+      - freer_jackett_conf_nfs:/sources/jackett/configuration
+      - freer_kibana_conf_nfs:/sources/kibana/configuration
+      - freer_logstash_pipeline_conf_nfs:/sources/logstash/pipelines
+      - freer_nextcloud_nfs:/sources/nextcloud
+      - freer_nginx_conf_share:/sources/nginx/configuration
+      - freer_nginx_ssl_share:/sources/nginx/ssl
+      - freer_nzbget_conf_nfs:/sources/nzbget/configuration
+      - freer_prometheus_conf_nfs:/sources/prometheus/configuration
+      - freer_prometheus_data_nfs:/sources/prometheus/data
+      - freer_syncthing_conf_nfs:/sources/syncthing/configuration
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+      resources:
+        limits:
+          memory: 128mb
+        reservations:
+          memory: 64mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_duplicati_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/duplicati_conf'
+      o: 'addr=192.168.1.2'
+  # backup volumes.
+  freer_photo_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/photo_backups'
+      o: 'addr=192.168.1.2'
+  freer_movie_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/movie_backups'
+      o: 'addr=192.168.1.2'
+  freer_tv_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/tv_backups'
+      o: 'addr=192.168.1.2'
+  freer_music_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/music_backups'
+      o: 'addr=192.168.1.2'
+  freer_app_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/app_backups'
+      o: 'addr=192.168.1.2'
+  freer_db_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/db_backups'
+      o: 'addr=192.168.1.2'
+  # source volumes.
+  freer_photos_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/photos'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  freer_tv_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/tv'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  freer_movies_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/movies'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  freer_music_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/music'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  # plex.
+  freer_plex_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/plex_conf'
+      o: 'addr=192.168.1.2'
+  # wikijs.
+  freer_wikijs_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/wikijs_conf'
+      o: 'addr=192.168.1.2'
+  freer_wikijs_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/wikijs_data'
+      o: 'addr=192.168.1.2'
+  # radarr.
+  freer_radarr_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/radarr_conf'
+      o: 'addr=192.168.1.2'
+  # elasticsearch.
+  freer_elasticsearch_certs_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/elasticsearch_certs'
+      o: 'addr=192.168.1.2'
+  freer_elasticsearch_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/elasticsearch_conf'
+      o: 'addr=192.168.1.2'
+  # grafana.
+  freer_grafana_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/grafana_conf'
+      o: 'addr=192.168.1.2'
+  # jackett.
+  freer_jackett_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/jackett_conf'
+      o: 'addr=192.168.1.2'
+  # kibana.
+  freer_kibana_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/kibana_conf'
+      o: 'addr=192.168.1.2'
+  # logstash.
+  freer_logstash_pipeline_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/logstash_pipeline_conf'
+      o: 'addr=192.168.1.2'
+  # nextcloud.
+  freer_nextcloud_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/nextcloud'
+      o: 'addr=192.168.1.2'
+  # nginx.
+  freer_nginx_conf_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/nginx_conf'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  freer_nginx_ssl_share:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.2/nginx_ssl'
+      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+  # nzbget.
+  freer_nzbget_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/nzbget_conf'
+      o: 'addr=192.168.1.2'
+  # prometheus.
+  freer_prometheus_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/prometheus_conf'
+      o: 'addr=192.168.1.2'
+  freer_prometheus_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/prometheus_data'
+      o: 'addr=192.168.1.2'
+  # syncthing.
+  freer_syncthing_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/syncthing_conf'
+      o: 'addr=192.168.1.2'
