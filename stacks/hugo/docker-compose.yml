@@ -3,10 +3,14 @@ version: '3.3'
 
 services:
   app:
+    # NOTE: must run sudo docker run --rm -it -v ~/nfs/exports/hugo_blog_site:/src klakegg/hugo:0.101.0 new site /src
+    # to make sure a site is created prior to spinning up this service.
+    #
     # https://gohugo.io/getting-started/installing/#docker
     # https://hub.docker.com/r/klakegg/hugo/
     image: klakegg/hugo:0.101.0
-    command: server
+    # https://themes.gohugo.io/themes/hugo-theme-terminal/#how-to-run-your-site
+    command: server -t terminal
     networks:
       - freer_network
     volumes:
