@@ -6,7 +6,6 @@ services:
     # https://gohugo.io/getting-started/installing/#docker
     # https://hub.docker.com/r/klakegg/hugo/
     image: klakegg/hugo:0.101.0
-    entrypoint: hugo-official
     networks:
       - freer_network
     volumes:
