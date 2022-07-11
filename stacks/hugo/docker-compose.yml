@@ -16,7 +16,7 @@ services:
     volumes:
       - freer_hugo_blog_site_nfs:/src
     environment:
-      - HUGO_ENV_ARG=${HUGO_ENV}
+      - HUGO_ENV=${HUGO_ENV}
     deploy:
       mode: replicated
       replicas: 1
