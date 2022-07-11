@@ -10,7 +10,7 @@ services:
     # https://hub.docker.com/r/klakegg/hugo/
     image: klakegg/hugo:0.101.0
     # https://themes.gohugo.io/themes/hugo-theme-terminal/#how-to-run-your-site
-    command: server -t terminal
+    command: -t terminal
     networks:
       - freer_network
     volumes:
