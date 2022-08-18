@@ -14,7 +14,7 @@ services:
       - 443:443
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         max_attempts: 3 
