@@ -22,9 +22,9 @@ services:
         max_attempts: 3
       resources:
         limits:
-          memory: 256mb
+          memory: 512mb
         reservations:
-          memory: 128mb
+          memory: 256mb
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     logging:
