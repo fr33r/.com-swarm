@@ -1,0 +1,52 @@
+---
+version: "3.3"
+services:
+  app:
+    # https://github.com/motioneye-project/motioneye/wiki/Install-In-Docker
+    image: ccrisan/motioneye:master-armhf
+    networks:
+      - freer_network
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - freer_motioneye_conf_nfs:/etc/motioneye
+      - freer_motioneye_data_nfs:/var/lib/motioneye
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+      resources:
+        limits:
+          memory: 256mb
+        reservations:
+          memory: 128mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_motioneye_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/motioneye_conf'
+      o: 'addr=192.168.1.2'
+  freer_motioneye_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/home/jon/nfs/exports/motioneye_data'
+      o: 'addr=192.168.1.2'
