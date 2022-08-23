@@ -12,6 +12,8 @@ services:
       - freer_motioneye_data_nfs:/var/lib/motioneye
     deploy:
       mode: replicated
+      placement:
+        constraints: [node.platform.arch == aarch64]
       replicas: 1
       restart_policy:
         condition: on-failure
