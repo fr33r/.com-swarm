@@ -10,13 +10,12 @@ services:
       - PUID=1000
       - PGID=1000
       - VERSION=docker
-      - PLEX_CLAIM=claim-5YyMzUkVz4Tvssvwg1mX
     volumes:
-      - freer_plex_conf_nfs:/config
-      - freer_photos_share:/photos
-      - freer_movies_share:/movies
-      - freer_tv_share:/tv
-      - freer_music_share:/music
+      - freer_nas_plex_conf_nfs:/config
+      - freer_nas_photos_smb:/photos
+      - freer_nas_movies_smb:/movies
+      - freer_nas_tv_smb:/tv
+      - freer_nas_music_smb:/music
       - /dev/shm:/transcode
     # https://docs.linuxserver.io/images/docker-plex#hardware-acceleration
     devices:
@@ -52,33 +51,33 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_plex_conf_nfs:
+  freer_nas_plex_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/plex_conf'
-      o: 'addr=192.168.1.2'
-  freer_photos_share:
+      device: ':/Plex-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_photos_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.2/photos'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-  freer_tv_share:
+      device: '//192.168.1.103/photos'
+      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+  freer_nas_tv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.2/tv'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-  freer_movies_share:
+      device: '//192.168.1.103/tv'
+      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+  freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.2/movies'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-  freer_music_share:
+      device: '//192.168.1.103/movies'
+      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+  freer_nas_music_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.2/music'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+      device: '//192.168.1.103/music'
+      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
