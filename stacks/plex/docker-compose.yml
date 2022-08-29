@@ -55,7 +55,7 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/Plex-Configuration'
+      device: ':/export/Plex-Configuration'
       o: 'addr=192.168.1.103'
   freer_nas_photos_smb:
     driver: local
