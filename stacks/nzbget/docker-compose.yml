@@ -7,14 +7,14 @@ services:
       - freer_network
     container_name: nzbget
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1015
+      - PGID=1001
       - TZ=America/Los_Angeles
       - NZBGET_USER=${USERNAME}
       - NZBGET_PASS=${PASSWORD}
     volumes:
-      - freer_nzbget_conf_nfs:/config
-      - freer_media_downloads_nfs:/downloads
+      - freer_nas_nzbget_conf_nfs:/config
+      - freer_nas_media_downloads_nfs:/downloads
     ports:
       - 6789:6789
     deploy:
@@ -48,15 +48,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nzbget_conf_nfs:
+  freer_nas_nzbget_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/nzbget_conf'
-      o: 'addr=192.168.1.2'
-  freer_media_downloads_nfs:
+      device: ':/export/NZBGet-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/media_downloads'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Media-Downloads'
+      o: 'addr=192.168.1.103'
