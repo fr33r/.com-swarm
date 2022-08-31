@@ -13,7 +13,7 @@ services:
     ports:
       - 8200:8200
     volumes:
-      - freer_duplicati_conf_nfs:/config
+      - freer_nas_duplicati_conf_nfs:/config
         # backup volumes.
       - freer_nas_photo_backups_nfs:/backups/photos
       - freer_nas_movie_backups_nfs:/backups/movies
@@ -126,19 +126,19 @@ volumes:
     driver_opts:
       type: cifs
       device: '//192.168.1.103/tv'
-      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+      o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD}'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.103/movies'
-      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+      o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD}'
   freer_nas_music_smb:
     driver: local
     driver_opts:
       type: cifs
       device: '//192.168.1.103/music'
-      o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
+      o: 'username=${MUSIC_SMB_USERNAME},password=${MUSIC_SMB_PASSWORD}'
   # plex.
   freer_nas_plex_conf_nfs:
     driver: local
