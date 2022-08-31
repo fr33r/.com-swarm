@@ -26,20 +26,20 @@ services:
       - freer_nas_movies_smb:/sources/movies
       - freer_nas_music_smb:/sources/music
       - freer_nas_tv_smb:/sources/tv
-      - freer_nas_plex_conf_nfs:/sources/plex/configuration
+      - freer_nas_plex_conf_nfs:/sources/conf/plex
 #     - freer_wikijs_conf_nfs:/sources/wikijs/configuration
 #     - freer_wikijs_data_nfs:/sources/wikijs/data
-#     - freer_radarr_conf_nfs:/sources/radarr/configuration
+      - freer_nas_radarr_conf_nfs:/sources/conf/radarr
 #     - freer_elasticsearch_certs_nfs:/sources/elasticsearch/certs
 #     - freer_elasticsearch_conf_nfs:/sources/elasticsearch/configuration
 #     - freer_grafana_conf_nfs:/sources/grafana/configuration
-#     - freer_jackett_conf_nfs:/sources/jackett/configuration
+      - freer_nas_jackett_conf_nfs:/sources/conf/jackett
 #     - freer_kibana_conf_nfs:/sources/kibana/configuration
 #     - freer_logstash_pipeline_conf_nfs:/sources/logstash/pipelines
 #     - freer_nextcloud_nfs:/sources/nextcloud
 #     - freer_nginx_conf_share:/sources/nginx/configuration
 #     - freer_nginx_ssl_share:/sources/nginx/ssl
-#     - freer_nzbget_conf_nfs:/sources/nzbget/configuration
+      - freer_nas_nzbget_conf_nfs:/sources/conf/nzbget
 #     - freer_prometheus_conf_nfs:/sources/prometheus/configuration
 #     - freer_prometheus_data_nfs:/sources/prometheus/data
 #     - freer_syncthing_conf_nfs:/sources/syncthing/configuration
@@ -159,13 +159,13 @@ volumes:
 #     type: nfs
 #     device: ':/home/jon/nfs/exports/wikijs_data'
 #     o: 'addr=192.168.1.2'
-# # radarr.
-# freer_radarr_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/radarr_conf'
-#     o: 'addr=192.168.1.2'
+  # radarr.
+  freer_nas_radarr_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Radarr-Configuration'
+      o: 'addr=192.168.1.103'
 # # elasticsearch.
 # freer_elasticsearch_certs_nfs:
 #   driver: local
@@ -186,13 +186,13 @@ volumes:
 #     type: nfs
 #     device: ':/home/jon/nfs/exports/grafana_conf'
 #     o: 'addr=192.168.1.2'
-# # jackett.
-# freer_jackett_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/jackett_conf'
-#     o: 'addr=192.168.1.2'
+  # jackett.
+  freer_nas_jackett_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Jackett-Configuration'
+      o: 'addr=192.168.1.103'
 # # kibana.
 # freer_kibana_conf_nfs:
 #   driver: local
@@ -227,13 +227,13 @@ volumes:
 #     type: cifs
 #     device: '//192.168.1.2/nginx_ssl'
 #     o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-# # nzbget.
-# freer_nzbget_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/nzbget_conf'
-#     o: 'addr=192.168.1.2'
+  # nzbget.
+  freer_nas_nzbget_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/NZBGet-Configuration'
+      o: 'addr=192.168.1.103'
 # # prometheus.
 # freer_prometheus_conf_nfs:
 #   driver: local
