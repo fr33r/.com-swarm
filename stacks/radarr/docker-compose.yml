@@ -7,13 +7,13 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1005
+      - PGID=1001
       - TZ=America/Los_Angeles
     volumes:
-      - freer_radarr_conf_nfs:/config
-      - freer_movies_share:/movies
-      - freer_media_downloads_nfs:/downloads
+      - freer_nas_radarr_conf_nfs:/config
+      - freer_nas_movies_smb:/movies
+      - freer_nas_media_downloads_nfs:/downloads
     ports:
       - 7878:7878
     deploy:
@@ -47,21 +47,21 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_radarr_conf_nfs:
+  freer_nas_radarr_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/radarr_conf'
-      o: 'addr=192.168.1.2'
-  freer_media_downloads_nfs:
+      device: ':/export/Radarr-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/media_downloads'
-      o: 'addr=192.168.1.2'
-  freer_movies_share:
+      device: ':/export/Media-Downloads'
+      o: 'addr=192.168.1.103'
+  freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.2/movies'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
+      device: '//192.168.1.103/movies'
+      o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD}'
