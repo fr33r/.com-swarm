@@ -19,8 +19,10 @@ services:
       - freer_nas_movie_backups_nfs:/backups/movies
       - freer_nas_tv_backups_nfs:/backups/tv
       - freer_nas_music_backups_nfs:/backups/music
-#     - freer_app_backups_nfs:/backups/app
-#     - freer_db_backups_nfs:/backups/db
+      - freer_nas_radarr_backups_nfs:/backups/conf/radarr
+      - freer_nas_jackett_backups_nfs:/backups/conf/jackett
+      - freer_nas_nzbget_backups_nfs:/backups/conf/nzbget
+      - freer_nas_duplicati_backups_nfs:/backups/conf/duplicati
         # source volumes.
       - freer_nas_photos_smb:/sources/photos
       - freer_nas_movies_smb:/sources/movies
@@ -102,18 +104,30 @@ volumes:
       type: nfs
       device: ':/export/Music-Backups'
       o: 'addr=192.168.1.103'
-# freer_app_backups_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/app_backups'
-#     o: 'addr=192.168.1.2'
-# freer_db_backups_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/db_backups'
-#     o: 'addr=192.168.1.2'
+  freer_nas_duplicati_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Duplicati-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_radarr_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Radarr-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_jackett_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Jackett-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_nzbget_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/NZBGet-Configuration-Backups'
+      o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
     driver: local
