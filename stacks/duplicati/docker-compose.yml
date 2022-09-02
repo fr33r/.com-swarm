@@ -23,6 +23,7 @@ services:
       - freer_nas_jackett_backups_nfs:/backups/conf/jackett
       - freer_nas_nzbget_backups_nfs:/backups/conf/nzbget
       - freer_nas_duplicati_backups_nfs:/backups/conf/duplicati
+      - freer_nas_plex_backups_nfs:/backups/conf/plex
         # source volumes.
       - freer_nas_photos_smb:/sources/photos
       - freer_nas_movies_smb:/sources/movies
@@ -127,6 +128,12 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/NZBGet-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_plex_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Plex-Configuration-Backups'
       o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
