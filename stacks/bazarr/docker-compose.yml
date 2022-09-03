@@ -1,0 +1,64 @@
+---
+version: "3.3"
+services:
+  app:
+    # https://hub.docker.com/r/linuxserver/bazarr
+    image: linuxserver/bazarr:latest
+    networks:
+      - freer_network
+    environment:
+      - PUID=1018
+      - PGID=1001
+      - TZ=America/Los_Angeles
+    volumes:
+      - freer_nas_bazarr_conf_nfs:/config
+      - freer_nas_movies_smb:/movies
+      - freer_nas_tv_smb:/tv
+    ports:
+      - 7878:7878
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+      resources:
+        limits:
+          memory: 512mb
+        reservations:
+          memory: 256mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  freer_network:
+    external: true
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_nas_bazarr_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Bazarr-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_movies_smb:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.103/movies'
+      o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=1018,gid=1001'
+  freer_nas_tv_smb:
+    driver: local
+    driver_opts:
+      type: cifs
+      device: '//192.168.1.103/tv'
+      o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD},uid=1018,gid=1001'
