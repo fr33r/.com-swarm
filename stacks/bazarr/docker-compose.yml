@@ -15,7 +15,7 @@ services:
       - freer_nas_movies_smb:/movies
       - freer_nas_tv_smb:/tv
     ports:
-      - 7878:7878
+      - 6767:6767
     deploy:
       mode: replicated
       replicas: 1
