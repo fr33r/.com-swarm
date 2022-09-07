@@ -66,6 +66,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
+      o: bind
       device: '/home/plex/config'
   freer_nas_photos_smb:
     driver: local
