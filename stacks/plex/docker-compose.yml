@@ -7,15 +7,26 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1002
-      - PGID=1001
+      - PUID=1009 # UID on media server, not NAS.
+      - PGID=1011
       - VERSION=docker
     volumes:
-      - freer_nas_plex_conf_nfs:/config
+      # using a local named bind mount for the Plex configuration for several
+      # reasons, including:
+      #   - better performance.
+      #   - reduce issues where Plex database connections are blocked.
+      #   - 'sqlite' is generally not supported on NFS.
+      #     - see: https://www.sqlite.org/faq.html#q5
+      #     - see: https://www.sqlite.org/search?q=nfs
+      # instead the goal is to use 'rsync' to synchronize the contents of this
+      # volume to the NAS, where it can be then subsequently backed up.
+      - freer_local_plex_conf:/config
+      # volumes for SMB shares.
       - freer_nas_photos_smb:/photos
       - freer_nas_movies_smb:/movies
       - freer_nas_tv_smb:/tv
       - freer_nas_music_smb:/music
+      # local bind mount for ramdisk. used to speed up performance of transcoding.
       - /dev/shm:/transcode
     # https://docs.linuxserver.io/images/docker-plex#hardware-acceleration
     devices:
@@ -25,7 +36,7 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == red
+          - node.labels.servertype == media
       restart_policy:
         condition: on-failure
         max_attempts: 3 
@@ -51,12 +62,11 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_plex_conf_nfs:
+  freer_local_plex_conf:
     driver: local
     driver_opts:
-      type: nfs
-      device: ':/export/Plex-Configuration'
-      o: 'addr=192.168.1.103'
+      type: none
+      device: '/home/plex/config'
   freer_nas_photos_smb:
     driver: local
     driver_opts:
