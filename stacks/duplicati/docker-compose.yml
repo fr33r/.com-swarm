@@ -24,6 +24,9 @@ services:
       - freer_nas_nzbget_backups_nfs:/backups/conf/nzbget
       - freer_nas_duplicati_backups_nfs:/backups/conf/duplicati
       - freer_nas_plex_backups_nfs:/backups/conf/plex
+      - freer_nas_prometheus_conf_backups_nfs:/backups/conf/prometheus
+      - freer_nas_prometheus_data_backups_nfs:/backups/data/prometheus
+      - freer_nas_grafana_backups_nfs:/backups/conf/grafana
         # source volumes.
       - freer_nas_photos_smb:/sources/photos
       - freer_nas_movies_smb:/sources/movies
@@ -35,7 +38,7 @@ services:
       - freer_nas_radarr_conf_nfs:/sources/conf/radarr
 #     - freer_elasticsearch_certs_nfs:/sources/elasticsearch/certs
 #     - freer_elasticsearch_conf_nfs:/sources/elasticsearch/configuration
-#     - freer_grafana_conf_nfs:/sources/grafana/configuration
+      - freer_nas_grafana_conf_nfs:/sources/conf/grafana
       - freer_nas_jackett_conf_nfs:/sources/conf/jackett
 #     - freer_kibana_conf_nfs:/sources/kibana/configuration
 #     - freer_logstash_pipeline_conf_nfs:/sources/logstash/pipelines
@@ -43,8 +46,8 @@ services:
 #     - freer_nginx_conf_share:/sources/nginx/configuration
 #     - freer_nginx_ssl_share:/sources/nginx/ssl
       - freer_nas_nzbget_conf_nfs:/sources/conf/nzbget
-#     - freer_prometheus_conf_nfs:/sources/prometheus/configuration
-#     - freer_prometheus_data_nfs:/sources/prometheus/data
+      - freer_nas_prometheus_conf_nfs:/sources/conf/prometheus
+      - freer_nas_prometheus_data_nfs:/sources/data/prometheus
 #     - freer_syncthing_conf_nfs:/sources/syncthing/configuration
     deploy:
       mode: replicated
@@ -135,6 +138,24 @@ volumes:
       type: nfs
       device: ':/export/Plex-Configuration-Backups'
       o: 'addr=192.168.1.103'
+  freer_nas_grafana_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Grafana-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_prometheus_conf_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Prometheus-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_prometheus_data_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Prometheus-Data-Backups'
+      o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
     driver: local
@@ -200,13 +221,13 @@ volumes:
 #     type: nfs
 #     device: ':/home/jon/nfs/exports/elasticsearch_conf'
 #     o: 'addr=192.168.1.2'
-# # grafana.
-# freer_grafana_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/grafana_conf'
-#     o: 'addr=192.168.1.2'
+  # grafana.
+  freer_nas_grafana_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Grafana-Configuration'
+      o: 'addr=192.168.1.103'
   # jackett.
   freer_nas_jackett_conf_nfs:
     driver: local
@@ -255,19 +276,19 @@ volumes:
       type: nfs
       device: ':/export/NZBGet-Configuration'
       o: 'addr=192.168.1.103'
-# # prometheus.
-# freer_prometheus_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/prometheus_conf'
-#     o: 'addr=192.168.1.2'
-# freer_prometheus_data_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/prometheus_data'
-#     o: 'addr=192.168.1.2'
+  # prometheus.
+  freer_nas_prometheus_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Prometheus-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_prometheus_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Prometheus-Data'
+      o: 'addr=192.168.1.103'
 # # syncthing.
 # freer_syncthing_conf_nfs:
 #   driver: local
