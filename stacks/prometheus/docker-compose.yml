@@ -9,8 +9,8 @@ services:
     networks:
       - freer_network
     volumes:
-      - freer_prometheus_conf_nfs:/etc/prometheus
-      - freer_prometheus_data_nfs:/prometheus
+      - freer_nas_prometheus_conf_nfs:/etc/prometheus
+      - freer_nas_prometheus_data_nfs:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
@@ -44,15 +44,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_prometheus_conf_nfs:
+  freer_nas_prometheus_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/prometheus_conf'
-      o: 'addr=192.168.1.2'
-  freer_prometheus_data_nfs:
+      device: ':/export/Prometheus-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_prometheus_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/prometheus_data'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Prometheus-Data'
+      o: 'addr=192.168.1.103'
