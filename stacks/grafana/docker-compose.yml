@@ -7,7 +7,7 @@ services:
     # https://hub.docker.com/r/grafana/grafana-oss
     image: grafana/grafana-oss:latest
     volumes:
-      - freer_grafana_conf_nfs:/var/lib/grafana
+      - freer_nas_grafana_conf_nfs:/var/lib/grafana
     networks:
       - freer_network
     deploy:
@@ -38,9 +38,9 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_grafana_conf_nfs:
+  freer_nas_grafana_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/grafana_conf'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Grafana-Configuration'
+      o: 'addr=192.168.1.103'
