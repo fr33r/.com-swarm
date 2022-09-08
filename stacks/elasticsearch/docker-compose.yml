@@ -5,16 +5,13 @@ services:
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
-      - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
+      - freer_nas_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
     networks:
       - freer_network
     user: "0"
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints:
-          - node.hostname == red
     command: >
       bash -c '
         if [ x${ELASTIC_PASSWORD} == x ]; then
@@ -66,8 +63,8 @@ services:
         aliases:
           - ${ELASTICSEARCH_HOST}
     volumes:
-      - freer_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
-      - freer_elasticsearch_conf_nfs:/usr/share/elasticsearch/data
+      - freer_nas_elasticsearch_certs_nfs:/usr/share/elasticsearch/config/certs
+      - freer_nas_elasticsearch_conf_nfs:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
       - node.name=elasticsearch_app
@@ -89,9 +86,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints:
-          - node.hostname == red
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
@@ -125,15 +119,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_elasticsearch_certs_nfs:
+  freer_nas_elasticsearch_certs_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/elasticsearch_certs'
-      o: 'addr=192.168.1.2'
-  freer_elasticsearch_conf_nfs:
+      device: ':/export/Elasticsearch-Certificates'
+      o: 'addr=192.168.1.103'
+  freer_nas_elasticsearch_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/elasticsearch_conf'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Elasticsearch-Configuration'
+      o: 'addr=192.168.1.103'
