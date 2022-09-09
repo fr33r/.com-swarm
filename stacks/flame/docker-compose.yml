@@ -49,3 +49,9 @@ volumes:
       type: nfs
       device: ':/export/Flame-Data'
       o: 'addr=192.168.1.103'
+
+# using Portainer to manage the creation of the secret, which is why
+# we specify 'external' here.
+secrets:
+  flame_password:
+    external: true
