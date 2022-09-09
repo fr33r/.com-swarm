@@ -3,7 +3,7 @@ version: '3.3'
 
 services:
   app:
-    image: pawelmalak/flame:multiarch
+    image: mhzawadi/flame
     networks:
       - freer_network
     volumes:
