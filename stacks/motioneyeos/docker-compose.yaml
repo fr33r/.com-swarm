@@ -8,8 +8,8 @@ services:
       - freer_network
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - freer_motioneye_conf_nfs:/etc/motioneye
-      - freer_motioneye_data_nfs:/var/lib/motioneye
+      - freer_nas_motioneye_conf_nfs:/etc/motioneye
+      - freer_nas_motioneye_data_nfs:/var/lib/motioneye
     deploy:
       mode: replicated
       placement:
@@ -40,15 +40,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_motioneye_conf_nfs:
+  freer_nas_motioneye_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/motioneye_conf'
-      o: 'addr=192.168.1.2'
-  freer_motioneye_data_nfs:
+      device: ':/export/MotionEye-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_motioneye_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/motioneye_data'
-      o: 'addr=192.168.1.2'
+      device: ':/export/MotionEye-Data'
+      o: 'addr=192.168.1.103'

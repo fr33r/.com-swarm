@@ -7,8 +7,8 @@ services:
     networks:
       - freer_network
     volumes:
-      - freer_elasticsearch_certs_nfs:/usr/share/kibana/config/certs
-      - freer_kibana_conf_nfs:/usr/share/kibana/data
+      - freer_nas_elasticsearch_certs_nfs:/usr/share/kibana/config/certs
+      - freer_nas_kibana_conf_nfs:/usr/share/kibana/data
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://${ELASTICSEARCH_HOST}:9200
@@ -54,15 +54,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_elasticsearch_certs_nfs:
+  freer_nas_elasticsearch_certs_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/elasticsearch_certs'
-      o: 'addr=192.168.1.2'
-  freer_kibana_conf_nfs:
+      device: ':/export/Elasticsearch-Certificates'
+      o: 'addr=192.168.1.103'
+  freer_nas_kibana_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/kibana_conf'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Kibana-Configuration'
+      o: 'addr=192.168.1.103'

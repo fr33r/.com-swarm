@@ -7,12 +7,12 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1017
+      - PGID=1001
       - TZ=America/Los_Angeles
     volumes:
-      - freer_wikijs_conf_nfs:/config
-      - freer_wikijs_data_nfs:/data
+      - freer_nas_wikijs_conf_nfs:/config
+      - freer_nas_wikijs_data_nfs:/data
     deploy:
       mode: replicated
       replicas: 1
@@ -41,15 +41,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_wikijs_conf_nfs:
+  freer_nas_wikijs_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/wikijs_conf'
-      o: 'addr=192.168.1.2'
-  freer_wikijs_data_nfs:
+      device: ':/export/WikiJS-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_wikijs_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/wikijs_data'
-      o: 'addr=192.168.1.2'
+      device: ':/export/WikiJS-Data'
+      o: 'addr=192.168.1.103'

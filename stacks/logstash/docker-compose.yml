@@ -7,8 +7,8 @@ services:
     networks:
       - freer_network
     volumes:
-      - freer_logstash_pipeline_conf_nfs:/usr/share/logstash/pipeline
-      - freer_elasticsearch_certs_nfs:/etc/logstash/config/certs
+      - freer_nas_logstash_conf_nfs:/usr/share/logstash/pipeline
+      - freer_nas_elasticsearch_certs_nfs:/etc/logstash/config/certs
     command: 'logstash -f /usr/share/logstash/pipeline/logstash.conf'
     environment:
       - xpack.monitoring.enabled=true
@@ -23,9 +23,6 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints:
-          - node.hostname == red
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
@@ -46,15 +43,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_logstash_pipeline_conf_nfs:
+  freer_nas_logstash_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/logstash_pipeline_conf'
-      o: 'addr=192.168.1.2'
-  freer_elasticsearch_certs_nfs:
+      device: ':/export/Logstash-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_elasticsearch_certs_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/elasticsearch_certs'
-      o: 'addr=192.168.1.2'
+      device: ':/export/Elasticsearch-Certificates'
+      o: 'addr=192.168.1.103'
