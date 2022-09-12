@@ -6,7 +6,7 @@ services:
     # https://github.com/oijkn/Docker-Raspberry-PI-Monitoring/blob/main/docker-compose.yml
     image: zcube/cadvisor:v0.38.8
     privileged: true
-    command: -logtostderr -docker_only --disable_metrics=hugetlb
+    command: -logtostderr -docker_only --disable_metrics=hugetlb --v=5
     networks:
       - freer_network
     volumes:
