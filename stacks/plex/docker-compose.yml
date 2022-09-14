@@ -8,7 +8,7 @@ services:
       - freer_network
     environment:
       - PUID=1009 # UID on media server, not NAS.
-      - PGID=1011
+      - PGID=1011 # GID on media server, not NAS.
       - VERSION=docker
     volumes:
       # using a local named bind mount for the Plex configuration for several
