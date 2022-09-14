@@ -7,11 +7,20 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1005
-      - PGID=1001
+      - PUID=1010 # UID on media server, not NAS.
+      - PGID=1012 # GID on media server, not NAS.
       - TZ=America/Los_Angeles
     volumes:
-      - freer_nas_radarr_conf_nfs:/config
+      # using a local named bind mount for the Radarr configuration for several
+      # reasons, including:
+      #   - better performance.
+      #   - reduce issues where Radarr database connections are blocked.
+      #   - 'sqlite' is generally not supported on NFS.
+      #     - see: https://www.sqlite.org/faq.html#q5
+      #     - see: https://www.sqlite.org/search?q=nfs
+      # instead the goal is to use 'rsync' to synchronize the contents of this
+      # volume to the NAS, where it can be then subsequently backed up.
+      - freer_local_radarr_conf:/config
       - freer_nas_movies_smb:/movies
       - freer_nas_media_downloads_nfs:/downloads
     ports:
@@ -47,12 +56,12 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_radarr_conf_nfs:
+  freer_local_radarr_conf:
     driver: local
     driver_opts:
-      type: nfs
-      device: ':/export/Radarr-Configuration'
-      o: 'addr=192.168.1.103'
+      type: none
+      o: bind
+      device: '/home/radarr/config'
   freer_nas_media_downloads_nfs:
     driver: local
     driver_opts:
