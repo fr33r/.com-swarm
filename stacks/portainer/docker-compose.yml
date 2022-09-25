@@ -51,11 +51,6 @@ services:
       options:
         gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
-    labels:
-      - flame.type=application
-      - flame.name=Portainer
-      - flame.url=https://admin.fr33r.com
-      - flame.icon=docker
 
 networks:
   freer_network:
