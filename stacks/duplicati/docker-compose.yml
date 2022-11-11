@@ -25,6 +25,8 @@ services:
       - freer_nas_duplicati_backups_nfs:/backups/conf/duplicati
       - freer_nas_plex_backups_nfs:/backups/conf/plex
       - freer_nas_prometheus_conf_backups_nfs:/backups/conf/prometheus
+      - freer_nas_portainer_data_backups_nfs:/backups/data/portainer
+      - freer_nas_portainer_conf_backups_nfs:/backups/conf/portainer
       - freer_nas_prometheus_data_backups_nfs:/backups/data/prometheus
       - freer_nas_grafana_backups_nfs:/backups/conf/grafana
         # source volumes.
@@ -48,6 +50,7 @@ services:
       - freer_nas_nzbget_conf_nfs:/sources/conf/nzbget
       - freer_nas_prometheus_conf_nfs:/sources/conf/prometheus
       - freer_nas_prometheus_data_nfs:/sources/data/prometheus
+      - portainer_nas_data_nfs:/sources/data/portainer
 #     - freer_syncthing_conf_nfs:/sources/syncthing/configuration
     deploy:
       mode: replicated
@@ -155,6 +158,18 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Data-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_portainer_data_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Portainer-Data-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_portainer_conf_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Portainer-Configuration-Backups'
       o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
@@ -288,6 +303,13 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Data'
+      o: 'addr=192.168.1.103'
+  # portainer.
+  portainer_nas_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Portainer-Configuration'
       o: 'addr=192.168.1.103'
 # # syncthing.
 # freer_syncthing_conf_nfs:
