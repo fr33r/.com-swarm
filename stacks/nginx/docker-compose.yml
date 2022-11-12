@@ -6,9 +6,6 @@ services:
     image: nginx
     networks:
       - freer_network
-    volumes:
-      - freer_nginx_conf_share:/etc/nginx/conf.d
-      - freer_nginx_ssl_share:/ssl
     ports:
       - 80:80
       - 443:443
@@ -79,20 +76,3 @@ secrets:
 networks:
   freer_network:
     external: true
-
-# have to replicate dependent volume definitions
-# to ensure all nodes are setup correctly.
-# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
-volumes:
-  freer_nginx_conf_share:
-    driver: local
-    driver_opts:
-      type: cifs
-      device: '//192.168.1.2/nginx_conf'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-  freer_nginx_ssl_share:
-    driver: local
-    driver_opts:
-      type: cifs
-      device: '//192.168.1.2/nginx_ssl'
-      o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
