@@ -26,8 +26,8 @@ services:
         gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
     configs:
-      - source: admin.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/admin.fr33r.com.conf.v1
+      - source: admin.fr33r.com.conf.v2
+        target: /etc/nginx/conf.d/admin.fr33r.com.conf.v2
       - source: blog.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/blog.fr33r.com.conf.v1
       - source: cams.fr33r.com.conf.v1
@@ -47,7 +47,7 @@ services:
       - nginx_edge_key.pem
 
 configs:
-  admin.fr33r.com.conf.v1:
+  admin.fr33r.com.conf.v2:
     external: true
   blog.fr33r.com.conf.v1:
     external: true
