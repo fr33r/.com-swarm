@@ -27,21 +27,21 @@ services:
         tag: '{{.Name}}'
     configs:
       - source: admin.fr33r.com.conf.v3
-        target: /etc/nginx/conf.d/admin.fr33r.com.conf.v3
+        target: /etc/nginx/conf.d/admin.fr33r.com.conf
       - source: blog.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/blog.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/blog.fr33r.com.conf
       - source: cams.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/cams.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/cams.fr33r.com.conf
       - source: collaboration.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/collaboration.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/collaboration.fr33r.com.conf
       - source: logs.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/logs.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/logs.fr33r.com.conf
       - source: media.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/media.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/media.fr33r.com.conf
       - source: monitoring.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/monitoring.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/monitoring.fr33r.com.conf
       - source: wiki.fr33r.com.conf.v1
-        target: /etc/nginx/conf.d/wiki.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/wiki.fr33r.com.conf
     secrets:
       - nginx_edge_cert.pem
       - nginx_edge_key.pem
