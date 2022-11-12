@@ -34,7 +34,7 @@ services:
         target: /etc/nginx/conf.d/cams.fr33r.com.conf
       - source: collaboration.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/collaboration.fr33r.com.conf
-      - source: logs.fr33r.com.conf.v1
+      - source: logs.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/logs.fr33r.com.conf
       - source: media.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/media.fr33r.com.conf
@@ -55,7 +55,7 @@ configs:
     external: true
   collaboration.fr33r.com.conf.v1:
     external: true
-  logs.fr33r.com.conf.v1:
+  logs.fr33r.com.conf.v2:
     external: true
   media.fr33r.com.conf.v1:
     external: true
