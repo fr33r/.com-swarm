@@ -28,6 +28,50 @@ services:
       options:
         gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
+    configs:
+      - source: admin.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/admin.fr33r.com.conf.v1
+      - source: blog.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/blog.fr33r.com.conf.v1
+      - source: cams.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/cams.fr33r.com.conf.v1
+      - source: collaboration.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/collaboration.fr33r.com.conf.v1
+      - source: logs.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/logs.fr33r.com.conf.v1
+      - source: media.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/media.fr33r.com.conf.v1
+      - source: monitoring.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/monitoring.fr33r.com.conf.v1
+      - source: wiki.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/wiki.fr33r.com.conf.v1
+    secrets:
+      - nginx_edge_cert.pem
+      - nginx_edge_key.pem
+
+configs:
+  admin.fr33r.com.conf.v1:
+    external: true
+  blog.fr33r.com.conf.v1:
+    external: true
+  cams.fr33r.com.conf.v1:
+    external: true
+  collaboration.fr33r.com.conf.v1:
+    external: true
+  logs.fr33r.com.conf.v1:
+    external: true
+  media.fr33r.com.conf.v1:
+    external: true
+  monitoring.fr33r.com.conf.v1:
+    external: true
+  wiki.fr33r.com.conf.v1:
+    external: true
+
+secrets:
+  nginx_edge_cert.pem:
+    external: true
+  nginx_edge_key.pem:
+    external: true
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
