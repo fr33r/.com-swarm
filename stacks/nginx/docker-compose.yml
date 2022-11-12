@@ -30,7 +30,7 @@ services:
         target: /etc/nginx/conf.d/admin.fr33r.com.conf
       - source: blog.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/blog.fr33r.com.conf
-      - source: cams.fr33r.com.conf.v1
+      - source: cams.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/cams.fr33r.com.conf
       - source: collaboration.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/collaboration.fr33r.com.conf
@@ -51,7 +51,7 @@ configs:
     external: true
   blog.fr33r.com.conf.v1:
     external: true
-  cams.fr33r.com.conf.v1:
+  cams.fr33r.com.conf.v2:
     external: true
   collaboration.fr33r.com.conf.v1:
     external: true
