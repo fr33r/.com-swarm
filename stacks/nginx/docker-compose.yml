@@ -40,7 +40,7 @@ services:
         target: /etc/nginx/conf.d/media.fr33r.com.conf
       - source: monitoring.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/monitoring.fr33r.com.conf
-      - source: wiki.fr33r.com.conf.v1
+      - source: wiki.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/wiki.fr33r.com.conf
     secrets:
       - nginx_edge_cert.pem
@@ -61,7 +61,7 @@ configs:
     external: true
   monitoring.fr33r.com.conf.v1:
     external: true
-  wiki.fr33r.com.conf.v1:
+  wiki.fr33r.com.conf.v2:
     external: true
 
 secrets:
