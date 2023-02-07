@@ -29,6 +29,7 @@ services:
       - freer_nas_portainer_conf_backups_nfs:/backups/conf/portainer
       - freer_nas_prometheus_data_backups_nfs:/backups/data/prometheus
       - freer_nas_grafana_backups_nfs:/backups/conf/grafana
+      - freer_nas_omv_backups_nfs:/backups/omv
         # source volumes.
       - freer_nas_photos_smb:/sources/photos
       - freer_nas_movies_smb:/sources/movies
@@ -170,6 +171,12 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Portainer-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_omv_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/OMV-Backup'
       o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
