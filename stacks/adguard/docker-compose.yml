@@ -8,7 +8,7 @@ services:
       - freer_network
     volumes:
       - freer_nas_adguard_conf_nfs:/opt/adguardhome/work
-      - freer_nas_adguard_data_nfs:/opt/adguardhome/con
+      - freer_nas_adguard_data_nfs:/opt/adguardhome/conf
     ports:
       # UI.
       - 3003:3000/tcp
