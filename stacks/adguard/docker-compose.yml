@@ -11,7 +11,7 @@ services:
       - freer_nas_adguard_data_nfs:/opt/adguardhome/con
     ports:
       # UI.
-      - 3000:3003/tcp
+      - 3003:3000/tcp
       # DNS.
       - 53:53/tcp
       - 53:53/udp
