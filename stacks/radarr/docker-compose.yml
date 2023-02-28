@@ -7,8 +7,8 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1010 # UID on media server, not NAS.
-      - PGID=1012 # GID on media server, not NAS.
+      - PUID=1005 # UID on media server, not NAS.
+      - PGID=1005 # GID on media server, not NAS.
       - TZ=America/Los_Angeles
     volumes:
       # using a local named bind mount for the Radarr configuration for several
