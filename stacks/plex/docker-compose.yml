@@ -7,8 +7,8 @@ services:
     networks:
       - freer_network
     environment:
-      - PUID=1009 # UID on media server, not NAS.
-      - PGID=1011 # GID on media server, not NAS.
+      - PUID=1002 # UID on media server, not NAS.
+      - PGID=1002 # GID on media server, not NAS.
       - VERSION=docker
       - PLEX_CLAIM=claim-3-KDRKF-xt61yyqVgbgw
     volumes:
