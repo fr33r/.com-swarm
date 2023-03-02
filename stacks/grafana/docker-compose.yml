@@ -5,7 +5,7 @@ version: '3.3'
 services:
   app:
     # https://hub.docker.com/r/grafana/grafana-oss
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana-oss:${STACK_VERSION:-latest}
     volumes:
       - freer_nas_grafana_conf_nfs:/var/lib/grafana
     networks:
