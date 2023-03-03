@@ -10,6 +10,8 @@ services:
       - freer_nas_grafana_conf_nfs:/var/lib/grafana
     networks:
       - freer_network
+    ports:
+      - 3005:3000
     deploy:
       mode: replicated
       replicas: 1
