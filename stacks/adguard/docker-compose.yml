@@ -5,7 +5,7 @@ services:
     # https://hub.docker.com/r/adguard/adguardhome
     image: adguard/adguardhome:${STACK_VERSION:-latest}
     networks:
-      - outside
+      - freer_network
     volumes:
       - freer_nas_adguard_conf_nfs:/opt/adguardhome/work
       - freer_nas_adguard_data_nfs:/opt/adguardhome/conf
@@ -47,9 +47,8 @@ services:
 # created during stack deploy.
 # https://docs.docker.com/compose/compose-file/#external
 networks:
-  outside:
-    external:
-      name: host
+  freer_network:
+    external: true
 
 # have to replicate dependent volume definitions
 # to ensure all nodes are setup correctly.
