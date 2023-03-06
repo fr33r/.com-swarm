@@ -9,6 +9,20 @@ services:
     volumes:
       - freer_nas_adguard_conf_nfs:/opt/adguardhome/work
       - freer_nas_adguard_data_nfs:/opt/adguardhome/conf
+    ports:
+      # UI.
+      - 3003:3000/tcp
+      # DNS.
+      - 53:53/tcp
+      - 53:53/udp
+      # DNS over TLS.
+      - 853:853/tcp
+      # DNS over QUIC.
+      - 784:784/udp
+      - 853:853/udp
+      - 8853:8853/udp
+      # NOTE: I do not plan on using AdGuard as a DHCP server.
+      # NOTE: I do not plan on using AdGuard as a DNSCrypt server.
     deploy:
       mode: replicated
       replicas: 1
