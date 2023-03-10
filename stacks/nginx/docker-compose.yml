@@ -43,6 +43,18 @@ services:
         target: /etc/nginx/conf.d/monitoring.fr33r.com.conf
       - source: wiki.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/wiki.fr33r.com.conf
+      - source: radarr.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/radarr.fr33r.com.conf
+      - source: nzbget.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/nzbget.fr33r.com.conf
+      - source: backups.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/backups.fr33r.com.conf
+      - source: jackett.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/jackett.fr33r.com.conf
+      - source: adguard.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/adguard.fr33r.com.conf
+      - source: bazarr.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/bazarr.fr33r.com.conf
     secrets:
       - nginx_edge_cert.pem
       - nginx_edge_key.pem
