@@ -73,23 +73,23 @@ volumes:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/photos'
+      device: '//nas.fr33r.com/photos'
       o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
   freer_nas_tv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/tv'
+      device: '//nas.fr33r.com/tv'
       o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD}'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/movies'
+      device: '//nas.fr33r.com/movies'
       o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD}'
   freer_nas_music_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/music'
+      device: '//nas.fr33r.com/music'
       o: 'username=${MUSIC_SMB_USERNAME},password=${MUSIC_SMB_PASSWORD}'

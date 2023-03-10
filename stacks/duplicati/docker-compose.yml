@@ -93,134 +93,134 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Duplicati-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # backup volumes.
   freer_nas_photo_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Photo-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_movie_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Movie-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_tv_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/TV-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_music_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Music-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_duplicati_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Duplicati-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_radarr_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Radarr-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_jackett_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Jackett-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_nzbget_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/NZBGet-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_plex_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Plex-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_grafana_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Grafana-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_prometheus_conf_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_prometheus_data_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Data-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_portainer_data_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Portainer-Data-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_portainer_conf_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Portainer-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_omv_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/OMV-Backup'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_adguard_conf_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/AdGuard-Configuration-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_adguard_data_backups_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/AdGuard-Data-Backups'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # source volumes.
   freer_nas_photos_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/photos'
+      device: '//nas.fr33r.com/photos'
       o: 'username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
   freer_nas_tv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/tv'
+      device: '//nas.fr33r.com/tv'
       o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD}'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/movies'
+      device: '//nas.fr33r.com/movies'
       o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD}'
   freer_nas_music_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/music'
+      device: '//nas.fr33r.com/music'
       o: 'username=${MUSIC_SMB_USERNAME},password=${MUSIC_SMB_PASSWORD}'
   # plex.
   freer_nas_plex_conf_nfs:
@@ -228,7 +228,7 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Plex-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
 # # wikijs.
 # freer_wikijs_conf_nfs:
 #   driver: local
@@ -248,7 +248,7 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Radarr-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
 # # elasticsearch.
 # freer_elasticsearch_certs_nfs:
 #   driver: local
@@ -268,14 +268,14 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Grafana-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # jackett.
   freer_nas_jackett_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Jackett-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
 # # kibana.
 # freer_kibana_conf_nfs:
 #   driver: local
@@ -303,37 +303,37 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/NZBGet-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # prometheus.
   freer_nas_prometheus_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_prometheus_data_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Prometheus-Data'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # portainer.
   portainer_nas_data_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Portainer-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   # adguard.
   freer_nas_adguard_conf__nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/AdGuard-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_adguard_data_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/AdGuard-Data'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'

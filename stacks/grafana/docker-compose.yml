@@ -45,4 +45,4 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Grafana-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'

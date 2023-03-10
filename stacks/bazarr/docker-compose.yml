@@ -55,16 +55,16 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Bazarr-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/movies'
+      device: '//nas.fr33r.com/movies'
       o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=1018,gid=1001'
   freer_nas_tv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.103/tv'
+      device: '//nas.fr33r.com/tv'
       o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD},uid=1018,gid=1001'

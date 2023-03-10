@@ -46,10 +46,10 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/WikiJS-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_wikijs_data_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/WikiJS-Data'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'

@@ -59,10 +59,10 @@ volumes:
     driver_opts:
       type: nfs
       device: ':/export/Elasticsearch-Certificates'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
   freer_nas_kibana_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
       device: ':/export/Kibana-Configuration'
-      o: 'addr=192.168.1.103'
+      o: 'addr=nas.fr33r.com'
