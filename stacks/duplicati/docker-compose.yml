@@ -325,7 +325,7 @@ volumes:
       device: ':/export/Portainer-Configuration'
       o: 'addr=nas.fr33r.com'
   # adguard.
-  freer_nas_adguard_conf__nfs:
+  freer_nas_adguard_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
