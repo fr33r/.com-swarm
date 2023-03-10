@@ -5,6 +5,7 @@ services:
     image: lscr.io/linuxserver/nzbget:latest
     networks:
       - freer_network
+      - freer_internal_network
     container_name: nzbget
     environment:
       - PUID=1015
@@ -42,6 +43,8 @@ services:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
+    external: true
+  freer_internal_network:
     external: true
 
 # have to replicate dependent volume definitions

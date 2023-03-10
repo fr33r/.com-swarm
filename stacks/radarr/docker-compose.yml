@@ -6,6 +6,7 @@ services:
     image: linuxserver/radarr:${STACK_VERSION:-latest}
     networks:
       - freer_network
+      - freer_internal_network
     environment:
       - PUID=1005 # UID on media server, not NAS.
       - PGID=1005 # GID on media server, not NAS.
@@ -50,6 +51,8 @@ services:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
+    external: true
+  freer_internal_network:
     external: true
 
 # have to replicate dependent volume definitions

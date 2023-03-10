@@ -6,6 +6,7 @@ services:
     image: linuxserver/bazarr:latest
     networks:
       - freer_network
+      - freer_internal_network
     environment:
       - PUID=1018
       - PGID=1001
@@ -41,6 +42,8 @@ services:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
+    external: true
+  freer_internal_network:
     external: true
 
 # have to replicate dependent volume definitions

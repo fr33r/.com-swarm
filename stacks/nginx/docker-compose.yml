@@ -6,6 +6,7 @@ services:
     image: nginx
     networks:
       - freer_network
+      - freer_internal_network
     ports:
       - 80:80
       - 443:443
@@ -75,4 +76,6 @@ secrets:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
+    external: true
+  freer_internal_network:
     external: true

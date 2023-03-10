@@ -6,6 +6,7 @@ services:
     image: lscr.io/linuxserver/duplicati:${STACK_VERSION:-latest}
     networks:
       - freer_network
+      - freer_internal_network
     environment:
       - PUID=0 # root
       - PGID=0 # root
@@ -79,6 +80,8 @@ services:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
+    external: true
+  freer_internal_network:
     external: true
 
 # have to replicate dependent volume definitions
