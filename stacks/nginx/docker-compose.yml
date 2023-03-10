@@ -76,6 +76,18 @@ configs:
     external: true
   wiki.fr33r.com.conf.v2:
     external: true
+  radarr.fr33r.com.conf.v1:
+    external: true
+  nzbget.fr33r.com.conf.v1:
+    external: true
+  backups.fr33r.com.conf.v1:
+    external: true
+  jackett.fr33r.com.conf.v1:
+    external: true
+  adguard.fr33r.com.conf.v1:
+    external: true
+  bazarr.fr33r.com.conf.v1:
+    external: true
 
 secrets:
   nginx_edge_cert.pem:
