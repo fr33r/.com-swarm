@@ -30,6 +30,8 @@ services:
       - freer_nas_prometheus_data_backups_nfs:/backups/data/prometheus
       - freer_nas_grafana_backups_nfs:/backups/conf/grafana
       - freer_nas_omv_backups_nfs:/backups/omv
+      - freer_nas_adguard_conf_backups_nfs:/backups/conf/adguard
+      - freer_nas_adguard_data_backups_nfs:/backups/data/adguard
         # source volumes.
       - freer_nas_photos_smb:/sources/photos
       - freer_nas_movies_smb:/sources/movies
@@ -53,6 +55,8 @@ services:
       - freer_nas_prometheus_data_nfs:/sources/data/prometheus
       - portainer_nas_data_nfs:/sources/data/portainer
 #     - freer_syncthing_conf_nfs:/sources/syncthing/configuration
+      - freer_nas_adguard_conf_nfs:/sources/conf/adguard
+      - freer_nas_adguard_data_nfs:/sources/data/adguard
     deploy:
       mode: replicated
       replicas: 1
@@ -178,6 +182,18 @@ volumes:
       type: nfs
       device: ':/export/OMV-Backup'
       o: 'addr=192.168.1.103'
+  freer_nas_adguard_conf_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/AdGuard-Configuration-Backups'
+      o: 'addr=192.168.1.103'
+  freer_nas_adguard_data_backups_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/AdGuard-Data-Backups'
+      o: 'addr=192.168.1.103'
   # source volumes.
   freer_nas_photos_smb:
     driver: local
@@ -278,19 +294,6 @@ volumes:
 #     type: nfs
 #     device: ':/home/jon/nfs/exports/nextcloud'
 #     o: 'addr=192.168.1.2'
-# # nginx.
-# freer_nginx_conf_share:
-#   driver: local
-#   driver_opts:
-#     type: cifs
-#     device: '//192.168.1.2/nginx_conf'
-#     o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
-# freer_nginx_ssl_share:
-#   driver: local
-#   driver_opts:
-#     type: cifs
-#     device: '//192.168.1.2/nginx_ssl'
-#     o: 'username=app,password=${SAMBA_APP_SHARE_PASSWORD}'
   # nzbget.
   freer_nas_nzbget_conf_nfs:
     driver: local
@@ -318,10 +321,16 @@ volumes:
       type: nfs
       device: ':/export/Portainer-Configuration'
       o: 'addr=192.168.1.103'
-# # syncthing.
-# freer_syncthing_conf_nfs:
-#   driver: local
-#   driver_opts:
-#     type: nfs
-#     device: ':/home/jon/nfs/exports/syncthing_conf'
-#     o: 'addr=192.168.1.2'
+  # adguard.
+  freer_nas_adguard_conf__nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/AdGuard-Configuration'
+      o: 'addr=192.168.1.103'
+  freer_nas_adguard_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/AdGuard-Data'
+      o: 'addr=192.168.1.103'
