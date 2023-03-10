@@ -47,7 +47,7 @@ services:
         target: /etc/nginx/conf.d/radarr.fr33r.com.conf
       - source: nzbget.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/nzbget.fr33r.com.conf
-      - source: backups.fr33r.com.conf.v1
+      - source: backups.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/backups.fr33r.com.conf
       - source: jackett.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/jackett.fr33r.com.conf
@@ -80,7 +80,7 @@ configs:
     external: true
   nzbget.fr33r.com.conf.v1:
     external: true
-  backups.fr33r.com.conf.v1:
+  backups.fr33r.com.conf.v2:
     external: true
   jackett.fr33r.com.conf.v1:
     external: true
