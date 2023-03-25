@@ -6,7 +6,6 @@ services:
     image: homeassistant/home-assistant:${STACK_VERSION:-latest}
     networks:
       - outside
-      - freer_internal_network
     environment:
       - TZ=America/Los_Angeles
     volumes:
@@ -38,8 +37,6 @@ networks:
   outside:
     external:
       name: host
-  freer_internal_network:
-    external: true
 
 # have to replicate dependent volume definitions
 # to ensure all nodes are setup correctly.
