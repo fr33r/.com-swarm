@@ -55,6 +55,8 @@ services:
         target: /etc/nginx/conf.d/adguard.fr33r.com.conf
       - source: bazarr.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/bazarr.fr33r.com.conf
+      - source: home.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/home.fr33r.com.conf
     secrets:
       - nginx_edge_cert.pem
       - nginx_edge_key.pem
@@ -87,6 +89,8 @@ configs:
   adguard.fr33r.com.conf.v1:
     external: true
   bazarr.fr33r.com.conf.v1:
+    external: true
+  home.fr33r.com.conf.v1:
     external: true
 
 secrets:
