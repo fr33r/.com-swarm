@@ -18,9 +18,7 @@ services:
         gelf-address: 'udp://0.0.0.0:12201'
         tag: '{{.Name}}'
     devices:
-      - /dev/bus/usb:/dev/bus/usb # passes the USB Coral, needs to be modified for other versions
-      - /dev/apex_0:/dev/apex_0 # passes a PCIe Coral, follow driver instructions here https://coral.ai/docs/m2/get-started/#2a-on-linux
-      - /dev/dri/renderD128 # for intel hwaccel, needs to be updated for your hardware
+      - /dev/dri:/dev/dri #Intel HWA
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - freer_nas_frigate_conf_nfs:/config
