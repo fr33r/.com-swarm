@@ -25,6 +25,16 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - freer_nas_frigate_conf_nfs:/config
+      # using a local named bind mount for the database for several
+      # reasons, including:
+      #   - better performance.
+      #   - reduce issues where database claims it is locked.
+      #   - 'sqlite' is generally not supported on NFS.
+      #     - see: https://www.sqlite.org/faq.html#q5
+      #     - see: https://www.sqlite.org/search?q=nfs
+      # instead the goal is to use 'rsync' to synchronize the contents of this
+      # volume to the NAS, where it can be then subsequently backed up.
+      - freer_local_frigate_data:/data
       - freer_nas_cctv_smb:/media/frigate
     environment:
       FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
@@ -53,3 +63,9 @@ volumes:
       type: cifs
       device: '//192.168.1.103/cctv'
       o: 'username=${CCTV_SMB_USERNAME},password=${CCTV_SMB_PASSWORD}'
+  freer_local_frigate_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: '/home/frigate/data'
