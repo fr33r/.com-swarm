@@ -23,10 +23,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - freer_nas_frigate_conf_nfs:/config
       - freer_nas_cctv_smb:/media/frigate
-      - type: tmpfs # Optional: 1GB of memory, reduces SSD/SD Card wear
-        target: /tmp/cache
-        tmpfs:
-          size: 1000000000
     environment:
       FRIGATE_RTSP_PASSWORD: ${FRIGATE_RTSP_PASSWORD}
 
