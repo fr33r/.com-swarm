@@ -1,0 +1,54 @@
+---
+version: "3.3"
+services:
+  app:
+    image: eclipse-mosquitto:${STACK_VERSION:-latest}
+    networks:
+      - outside
+    volumes:
+      - freer_nas_mosquitto_conf_nfs:/mosquitto
+      - freer_nas_mosquitto_data_nfs:/mosquitto/data
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.smarthome == true
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3 
+      resources:
+        limits:
+          memory: 1gb
+        reservations:
+          memory: 1gb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: 'udp://0.0.0.0:12201'
+        tag: '{{.Name}}'
+
+# have to reference external network, otherwise a new scoped network is
+# created during stack deploy.
+# https://docs.docker.com/compose/compose-file/#external
+networks:
+  outside:
+    external:
+      name: host
+
+# have to replicate dependent volume definitions
+# to ensure all nodes are setup correctly.
+# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
+volumes:
+  freer_nas_mosquitto_conf_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Mosquitto-Configuration'
+      o: 'addr=nas.fr33r.com'
+  freer_nas_mosquitto_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ':/export/Mosquitto-Data'
+      o: 'addr=nas.fr33r.com'
