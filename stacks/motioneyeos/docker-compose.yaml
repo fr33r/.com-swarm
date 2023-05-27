@@ -9,7 +9,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - freer_nas_motioneye_conf_nfs:/etc/motioneye
-      - freer_nas_motioneye_data_nfs:/var/lib/motioneye
+      - freer_nas_cctv_smb:/var/lib/motioneye
     deploy:
       mode: replicated
       placement:
@@ -46,9 +46,9 @@ volumes:
       type: nfs
       device: ':/export/MotionEye-Configuration'
       o: 'addr=nas.fr33r.com'
-  freer_nas_motioneye_data_nfs:
+  freer_nas_cctv_smb:
     driver: local
     driver_opts:
-      type: nfs
-      device: ':/export/MotionEye-Data'
-      o: 'addr=nas.fr33r.com'
+      type: cifs
+      device: '//192.168.1.103/cctv'
+      o: 'username=${CCTV_SMB_USERNAME},password=${CCTV_SMB_PASSWORD}'
