@@ -59,6 +59,10 @@ services:
         target: /etc/nginx/conf.d/home.fr33r.com.conf
       - source: surveillance.fr33r.com.conf.v1
         target: /etc/nginx/conf.d/surveillance.fr33r.com.conf
+      - source: front-cam.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/front-cam.fr33r.com.conf
+      - source: garage-cam.fr33r.com.conf.v1
+        target: /etc/nginx/conf.d/garage-cam.fr33r.com.conf
     secrets:
       - nginx_edge_cert.pem
       - nginx_edge_key.pem
@@ -95,6 +99,10 @@ configs:
   home.fr33r.com.conf.v1:
     external: true
   surveillance.fr33r.com.conf.v1:
+    external: true
+  front-cam.fr33r.com.conf.v1:
+    external: true
+  garage-cam.fr33r.com.conf.v1:
     external: true
 
 secrets:
