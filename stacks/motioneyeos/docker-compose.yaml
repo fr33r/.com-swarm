@@ -20,9 +20,9 @@ services:
         max_attempts: 3 
       resources:
         limits:
-          memory: 512mb
+          memory: 1gb
         reservations:
-          memory: 256mb
+          memory: 512mb
     logging:
       driver: gelf
       options:
