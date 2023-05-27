@@ -10,6 +10,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - freer_nas_motioneye_conf_nfs:/etc/motioneye
       - freer_nas_cctv_smb:/var/lib/motioneye
+    ports:
+      - 8765:8765
+      - 8766:8766
     deploy:
       mode: replicated
       placement:
