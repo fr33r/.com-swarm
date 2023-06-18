@@ -34,8 +34,8 @@ services:
     secrets:
       - source: elasticsearch_single_node_cert
         target: elasticsearch_single_node_cert
-        uid: 1000
-        gid: 1000
+        uid: '1000'
+        gid: '1000'
         
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
