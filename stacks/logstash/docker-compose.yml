@@ -19,7 +19,11 @@ services:
       - 12201:12201/udp
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - node.labels.elk == true
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
@@ -34,6 +38,9 @@ services:
     secrets:
       - source: elasticsearch_single_node_cert
         target: elasticsearch_single_node_cert
+        # https://discuss.elastic.co/t/docker-setup-generated-certs-logstash-permission-denied/301133
+        # https://www.elastic.co/guide/en/logstash/current/docker-config.html
+        # https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets
         uid: '1000'
         gid: '1000'
         
