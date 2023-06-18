@@ -29,7 +29,7 @@ services:
         reservations:
           memory: 1gb
     configs:
-      - source: logstash.conf.v1
+      - source: logstash.conf.v2
         target: /usr/share/logstash/pipeline/logstash.conf
     secrets:
       - source: elasticsearch_single_node_cert
@@ -45,7 +45,7 @@ networks:
     external: true
 
 configs:
-  logstash.conf.v1:
+  logstash.conf.v2:
     external: true
 
 secrets:
