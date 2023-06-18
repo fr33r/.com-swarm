@@ -6,14 +6,11 @@ services:
     image: docker.elastic.co/logstash/logstash:${STACK_VERSION}
     networks:
       - freer_network
-    volumes:
-      - freer_nas_logstash_conf_nfs:/usr/share/logstash/pipeline
-      - freer_nas_elasticsearch_certs_nfs:/etc/logstash/config/certs
     command: 'logstash -f /usr/share/logstash/pipeline/logstash.conf'
     environment:
       - xpack.monitoring.enabled=true
       - xpack.monitoring.elasticsearch.hosts=https://${ELASTICSEARCH_HOST}:9200
-      - xpack.monitoring.elasticsearch.ssl.certificate_authority=/etc/logstash/config/certs/ca/ca.crt
+      - xpack.monitoring.elasticsearch.ssl.certificate_authority=/run/secrets/elasticsearch_single_node_cert
       - xpack.monitoring.elasticsearch.username=${LOGSTASH_USER}
       - xpack.monitoring.elasticsearch.password=${LOGSTASH_PASSWORD}
       - xpack.monitoring.collection.interval=10s
@@ -31,6 +28,14 @@ services:
           memory: 1gb
         reservations:
           memory: 1gb
+    configs:
+      - source: logstash.conf.v1
+        target: /usr/share/logstash/pipeline/logstash.conf
+    secrets:
+      - source: elasticsearch_single_node_cert
+        target: elasticsearch_single_node_cert
+        uid: 1000
+        gid: 1000
         
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
@@ -39,19 +44,10 @@ networks:
   freer_network:
     external: true
 
-# have to replicate dependent volume definitions
-# to ensure all nodes are setup correctly.
-# https://docs.docker.com/compose/compose-file/#volumes-top-level-element
-volumes:
-  freer_nas_logstash_conf_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ':/export/Logstash-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_elasticsearch_certs_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ':/export/Elasticsearch-Certificates'
-      o: 'addr=nas.fr33r.com'
+configs:
+  logstash.conf.v1:
+    external: true
+
+secrets:
+  elasticsearch_single_node_cert:
+    external: true
