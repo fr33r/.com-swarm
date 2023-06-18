@@ -7,19 +7,22 @@ services:
     networks:
       - freer_network
     volumes:
-      - freer_nas_elasticsearch_certs_nfs:/usr/share/kibana/config/certs
       - freer_nas_kibana_conf_nfs:/usr/share/kibana/data
     environment:
       - SERVERNAME=kibana
       - ELASTICSEARCH_HOSTS=https://${ELASTICSEARCH_HOST}:9200
-      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_USERNAME=${KIBANA_USER}
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
-      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=/run/secrets/elasticsearch_single_node_cert
     ports:
       - 5601:5601
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+          - node.labels.elk == true
       restart_policy:
         condition: on-failure 
         max_attempts: 3 
@@ -28,6 +31,13 @@ services:
           memory: 1gb
         reservations:
           memory: 512mb
+    secrets:
+      - source: elasticsearch_single_node_cert
+        target: elasticsearch_single_node_cert
+        # https://discuss.elastic.co/t/docker-setup-generated-certs-logstash-permission-denied/301133
+        # https://docs.docker.com/compose/compose-file/compose-file-v3/#secrets
+        uid: '1000'
+        gid: '0'
     logging:
       driver: gelf
       options:
@@ -50,16 +60,14 @@ networks:
   freer_network:
     external: true
 
+secrets:
+  elasticsearch_single_node_cert:
+    external: true
+
 # have to replicate dependent volume definitions
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_elasticsearch_certs_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ':/export/Elasticsearch-Certificates'
-      o: 'addr=nas.fr33r.com'
   freer_nas_kibana_conf_nfs:
     driver: local
     driver_opts:
