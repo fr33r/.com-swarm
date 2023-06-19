@@ -4,7 +4,7 @@ version: '3.3'
 services:
   app:
     # https://github.com/oijkn/Docker-Raspberry-PI-Monitoring/blob/main/docker-compose.yml
-    image: zcube/cadvisor:v0.38.8
+    image: gcr.io/cadvisor/cadvisor:${STACK_VERSION:-v0.47.1}
     privileged: true
     # see: https://github.com/google/cadvisor/issues/3139
     command: -logtostderr -docker_only --disable_metrics=hugetlb --disable_metrics=referenced_memory
