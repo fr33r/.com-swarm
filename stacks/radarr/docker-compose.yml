@@ -23,7 +23,7 @@ services:
       # volume to the NAS, where it can be then subsequently backed up.
       - freer_local_radarr_conf:/config
       - freer_nas_movies_smb:/movies
-      - freer_nas_media_downloads_nfs:/downloads
+      - freer_nas_media_downloads_smb:/downloads
     ports:
       - 7878:7878
     deploy:
@@ -65,12 +65,12 @@ volumes:
       type: none
       o: bind
       device: '/home/radarr/config'
-  freer_nas_media_downloads_nfs:
+  freer_nas_media_downloads_smb:
     driver: local
     driver_opts:
-      type: nfs
-      device: ':/export/Media-Downloads'
-      o: 'addr=nas.fr33r.com'
+      type: cifs
+      device: '//nas-ii.fr33r.com/movie-downloads'
+      o: 'username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD}'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
