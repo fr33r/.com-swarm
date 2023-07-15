@@ -70,7 +70,7 @@ volumes:
     driver_opts:
       type: cifs
       device: '//nas-ii.fr33r.com/movie-downloads'
-      o: 'username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD}'
+      o: 'vers=3.0,username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD}'
   freer_nas_movies_smb:
     driver: local
     driver_opts:
