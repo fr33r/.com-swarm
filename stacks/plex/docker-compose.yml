@@ -10,7 +10,6 @@ services:
       - PUID=1002 # UID on media server, not NAS.
       - PGID=1002 # GID on media server, not NAS.
       - VERSION=docker
-      - PLEX_CLAIM=claim-3-KDRKF-xt61yyqVgbgw
     volumes:
       # using a local named bind mount for the Plex configuration for several
       # reasons, including:
