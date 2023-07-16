@@ -2,20 +2,20 @@
 version: "3.3"
 services:
   app:
-    image: lscr.io/linuxserver/nzbget:latest
+    image: lscr.io/linuxserver/nzbget:${STACK_VERSION:-latest}
     networks:
       - freer_network
       - freer_internal_network
     container_name: nzbget
     environment:
-      - PUID=1015
-      - PGID=1001
+      - PUID=${NZBGET_PUID}
+      - PGID=${NZBGET_PGID}
       - TZ=America/Los_Angeles
       - NZBGET_USER=${USERNAME}
       - NZBGET_PASS=${PASSWORD}
     volumes:
       - freer_nas_nzbget_conf_nfs:/config
-      - freer_nas_media_downloads_nfs:/downloads
+      - freer_nas_media_downloads_smb:/downloads
     ports:
       - 6789:6789
     deploy:
@@ -57,9 +57,9 @@ volumes:
       type: nfs
       device: ':/export/NZBGet-Configuration'
       o: 'addr=nas.fr33r.com'
-  freer_nas_media_downloads_nfs:
+  freer_nas_media_downloads_smb:
     driver: local
     driver_opts:
-      type: nfs
-      device: ':/export/Media-Downloads'
-      o: 'addr=nas.fr33r.com'
+      type: cifs
+      device: '//192.168.1.86/movie-downloads'
+      o: 'vers=3.0,username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD},uid=${NZBGET_PUID},gid=${NZBGET_PGID}'
