@@ -22,10 +22,10 @@ services:
       # volume to the NAS, where it can be then subsequently backed up.
       - freer_local_plex_conf:/config
       # volumes for SMB shares.
-      - freer_nas_photos_smb:/photos
-      - freer_nas_movies_smb:/movies
-      - freer_nas_tv_smb:/tv
-      - freer_nas_music_smb:/music
+      - freer_nas_photos_smb_as_plex:/photos
+      - freer_nas_movies_smb_as_plex:/movies
+      - freer_nas_tv_smb_as_plex:/tv
+      - freer_nas_music_smb_as_plex:/music
       # local bind mount for ramdisk. used to speed up performance of transcoding.
       - /dev/shm:/transcode
     # https://docs.linuxserver.io/images/docker-plex#hardware-acceleration
@@ -68,25 +68,25 @@ volumes:
       type: none
       o: bind
       device: '/home/plex/config'
-  freer_nas_photos_smb:
+  freer_nas_photos_smb_as_plex:
     driver: local
     driver_opts:
       type: cifs
       device: '//nas-ii.fr33r.com/photos'
       o: 'addr=nas-ii.fr33r.com,username=${PHOTOS_SMB_USERNAME},password=${PHOTOS_SMB_PASSWORD}'
-  freer_nas_tv_smb:
+  freer_nas_tv_smb_as_plex:
     driver: local
     driver_opts:
       type: cifs
       device: '//nas-ii.fr33r.com/tv'
       o: 'addr=nas-ii.fr33r.com,username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD}'
-  freer_nas_movies_smb:
+  freer_nas_movies_smb_as_plex:
     driver: local
     driver_opts:
       type: cifs
       device: '//nas-ii.fr33r.com/movies'
       o: 'addr=nas-ii.fr33r.com,username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD}'
-  freer_nas_music_smb:
+  freer_nas_music_smb_as_plex:
     driver: local
     driver_opts:
       type: cifs
