@@ -15,7 +15,7 @@ services:
       - NZBGET_PASS=${PASSWORD}
     volumes:
       - freer_nas_nzbget_conf_nfs:/config
-      - freer_nas_media_downloads_smb:/downloads
+      - freer_nas_movie_downloads_smb_as_nzbget:/downloads
     ports:
       - 6789:6789
     deploy:
@@ -57,7 +57,7 @@ volumes:
       type: nfs
       device: ':/export/NZBGet-Configuration'
       o: 'addr=nas.fr33r.com'
-  freer_nas_media_downloads_smb:
+  freer_nas_movie_downloads_smb_as_nzbget:
     driver: local
     driver_opts:
       type: cifs
