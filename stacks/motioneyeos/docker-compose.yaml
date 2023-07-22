@@ -8,8 +8,8 @@ services:
       - freer_network
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - freer_nas_motioneye_conf_nfs:/etc/motioneye
-      - freer_nas_cctv_smb:/var/lib/motioneye
+      - nas_motioneye_conf_nfs:/etc/motioneye
+      - nas_cctv_smb:/var/lib/motioneye
     ports:
       - 8765:8765
       - 8766:8766
@@ -43,15 +43,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_motioneye_conf_nfs:
+  nas_motioneye_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/MotionEye-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_cctv_smb:
+      device: ':/volume1/MotionEye-Configuration'
+      o: 'addr=nas-ii.fr33r.com'
+  nas_cctv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.86/cctv'
-      o: 'username=${CCTV_SMB_USERNAME},password=${CCTV_SMB_PASSWORD}'
+      device: '//nas-ii.fr33r.com/cctv'
+      o: 'addr=nas-ii.fr33r.com,username=${CCTV_SMB_USERNAME},password=${CCTV_SMB_PASSWORD}'
