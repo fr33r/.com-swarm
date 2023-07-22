@@ -14,8 +14,8 @@ services:
       - NZBGET_USER=${USERNAME}
       - NZBGET_PASS=${PASSWORD}
     volumes:
-      - freer_nas_nzbget_conf_nfs:/config
-      - freer_nas_movie_downloads_smb_as_nzbget:/downloads
+      - nas_nzbget_conf_nfs:/config
+      - nas_movie_downloads_smb:/downloads
     ports:
       - 6789:6789
     deploy:
@@ -51,15 +51,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_nzbget_conf_nfs:
+  nas_nzbget_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/NZBGet-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_movie_downloads_smb_as_nzbget:
+      device: ':/volume1/NZBGet-Configuration'
+      o: 'addr=nas-ii.fr33r.com'
+  nas_movie_downloads_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//192.168.1.86/movie-downloads'
-      o: 'vers=3.0,username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD},uid=${NZBGET_PUID},gid=${NZBGET_PGID}'
+      device: '//nas-ii.fr33r.com/movie-downloads'
+      o: 'addr=nas-ii.fr33r.com,username=${MOVIE_DOWNLOADS_SMB_USERNAME},password=${MOVIE_DOWNLOADS_SMB_PASSWORD},uid=${NZBGET_PUID},gid=${NZBGET_PGID}'
