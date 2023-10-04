@@ -86,6 +86,8 @@ secrets:
     external: true
   grafana_db_password:
     external: true
+  grafana_db_root_password:
+    external: true
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
