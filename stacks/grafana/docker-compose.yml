@@ -76,6 +76,10 @@ services:
       options:
         gelf-address: "udp://0.0.0.0:12201"
         tag: "{{.Name}}"
+    secrets:
+      - grafana_db_user
+      - grafana_db_password
+      - grafana_db_root_password
 
 secrets:
   grafana_admin_user:
