@@ -7,7 +7,7 @@ services:
     # https://hub.docker.com/r/grafana/grafana-oss
     image: grafana/grafana-oss:${STACK_VERSION:-latest}
     volumes:
-      - freer_nas_grafana_conf_nfs:/var/lib/grafana
+      - nas_conf_nfs:/var/lib/grafana
     networks:
       - freer_network
     ports:
@@ -49,7 +49,7 @@ services:
     image: mysql:${DB_STACK_VERSION:-8.1.0}
     command: --default-authentication-plugin=mysql_native_password
     volumes:
-      - freer_local_mysql_data:/var/lib/mysql
+      - local_mysql_data:/var/lib/mysql
     networks:
       - freer_network
     environment:
@@ -104,13 +104,13 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_grafana_conf_nfs:
+  nas_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ":/export/Grafana-Configuration"
-      o: "addr=nas.fr33r.com"
-  freer_local_mysql_data:
+      device: ":/volume1/Grafana-Configuration"
+      o: "addr=nas-ii.fr33r.com"
+  local_mysql_data:
     driver: local
     driver_opts:
       type: none
