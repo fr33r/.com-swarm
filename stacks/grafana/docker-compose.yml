@@ -13,13 +13,13 @@ services:
     ports:
       - 3005:3000
     environment:
-      - GF_SECURITY_ADMIN_USER_FILE=/run/secrets/grafana_admin_user
-      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+      - GF_SECURITY_ADMIN_USER__FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
       - GF_DATABASE_TYPE=mysql
       - GF_DATABASE_HOST=db
       - GF_DATABASE_NAME=grafana
-      - GF_DATABASE_USER_FILE=/run/secrets/grafana_db_user
-      - GF_DATABASE_PASSWORD_FILE=/run/secrets/grafana_db_password
+      - GF_DATABASE_USER__FILE=/run/secrets/grafana_db_user
+      - GF_DATABASE_PASSWORD__FILE=/run/secrets/grafana_db_password
       - GF_DATABASE_MAX_IDLE_CONN=5
       - GF_DATABASE_MAX_OPEN_CONN=5
       - GF_DATABASE_ISOLATION_LEVEL='READ-COMMITTED'
