@@ -12,7 +12,7 @@ services:
       - freer_network
     ports:
       - 3005:3000
-    environments:
+    environment:
       - GF_SECURITY_ADMIN_USER_FILE=/run/secrets/grafana_admin_user
       - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
       - GF_DATABASE_TYPE=mysql
@@ -52,7 +52,7 @@ services:
       - freer_local_mysql_data:/var/lib/mysql
     networks:
       - freer_network
-    environments:
+    environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/grafana_db_root_password
       - MYSQL_DATABASE=grafana
       - MYSQL_USER_FILE=/run/secrets/grafana_db_user
