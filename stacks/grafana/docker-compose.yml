@@ -44,7 +44,6 @@ services:
       - grafana_admin_password
       - grafana_db_user
       - grafana_db_password
-      - grafana_db_root_password
   db:
     image: mysql:${DB_STACK_VERSION:-8.1.0}
     command: --default-authentication-plugin=mysql_native_password
