@@ -22,7 +22,6 @@ services:
       - GF_DATABASE_PASSWORD__FILE=/run/secrets/grafana_db_password
       - GF_DATABASE_MAX_IDLE_CONN=5
       - GF_DATABASE_MAX_OPEN_CONN=5
-      - GF_DATABASE_ISOLATION_LEVEL='READ-COMMITTED'
     deploy:
       mode: replicated
       replicas: 1
