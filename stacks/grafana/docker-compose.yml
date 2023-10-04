@@ -1,5 +1,5 @@
 ---
-version: '3.3'
+version: "3.3"
 
 # https://grafana.com/docs/grafana-cloud/quickstart/docker-compose-linux/
 services:
@@ -12,12 +12,23 @@ services:
       - freer_network
     ports:
       - 3005:3000
+    environments:
+      - GF_SECURITY_ADMIN_USER_FILE=/run/secrets/grafana_admin_user
+      - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
+      - GF_DATABASE_TYPE=mysql
+      - GF_DATABASE_HOST='db:3306'
+      - GF_DATABASE_NAME=grafana
+      - GF_DATABASE_USER_FILE=/run/secrets/grafana_db_user
+      - GF_DATABASE_PASSWORD_FILE=/run/secrets/grafana_db_password
+      - GF_DATABASE_MAX_IDLE_CONN=5
+      - GF_DATABASE_MAX_OPEN_CONN=5
+      - GF_DATABASE_ISOLATION_LEVEL='READ-COMMITTED'
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
         condition: on-failure
-        max_attempts: 3 
+        max_attempts: 3
       resources:
         limits:
           memory: 128mb
@@ -26,8 +37,55 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+    secrets:
+      - grafana_admin_user
+      - grafana_admin_password
+      - grafana_db_user
+      - grafana_db_password
+      - grafana_db_root_password
+  db:
+    image: mysql:${DB_STACK_VERSION:-8.1.0}
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - freer_local_mysql_data:/var/lib/mysql
+    networks:
+      - freer_network
+    environments:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/grafana_db_root_password
+      - MYSQL_DATABASE=grafana
+      - MYSQL_USER_FILE=/run/secrets/grafana_db_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/grafana_db_password
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.mysql == true
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          memory: 2gb
+        reservations:
+          memory: 1gb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+
+secrets:
+  grafana_admin_user:
+    external: true
+  grafana_admin_password:
+    external: true
+  grafana_db_user:
+    external: true
+  grafana_db_password:
+    external: true
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
@@ -44,5 +102,11 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Grafana-Configuration'
-      o: 'addr=nas.fr33r.com'
+      device: ":/export/Grafana-Configuration"
+      o: "addr=nas.fr33r.com"
+  freer_local_mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/grafana/db/data"
