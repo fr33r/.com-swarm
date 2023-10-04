@@ -16,7 +16,7 @@ services:
       - GF_SECURITY_ADMIN_USER_FILE=/run/secrets/grafana_admin_user
       - GF_SECURITY_ADMIN_PASSWORD_FILE=/run/secrets/grafana_admin_password
       - GF_DATABASE_TYPE=mysql
-      - GF_DATABASE_HOST='db:3306'
+      - GF_DATABASE_HOST=db
       - GF_DATABASE_NAME=grafana
       - GF_DATABASE_USER_FILE=/run/secrets/grafana_db_user
       - GF_DATABASE_PASSWORD_FILE=/run/secrets/grafana_db_password
