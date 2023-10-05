@@ -33,11 +33,11 @@ services:
         gelf-address: "udp://0.0.0.0:12201"
         tag: "{{.Name}}"
     configs:
-      - source: prometheus.yml.v1
+      - source: prometheus.yml.v2
         target: /etc/prometheus/prometheus.yml
 
 configs:
-  prometheus.yml.v1:
+  prometheus.yml.v2:
     external: true
 
 # have to reference external network, otherwise a new scoped network is
