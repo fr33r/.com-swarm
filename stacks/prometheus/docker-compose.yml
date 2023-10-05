@@ -4,13 +4,13 @@ version: "3.3"
 # should look into this ^.
 services:
   app:
-    image: prom/prometheus:latest
+    image: prom/prometheus:${STACK_VERSION:-latest}
     user: root
     networks:
       - freer_network
     volumes:
-      - freer_nas_prometheus_conf_nfs:/etc/prometheus
-      - freer_nas_prometheus_data_nfs:/prometheus
+      - nas_conf_nfs:/etc/prometheus
+      - nas_data_nfs:/prometheus
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
@@ -30,8 +30,15 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+    configs:
+      - source: prometheus.yml.v1
+        target: /etc/prometheus/prometheus.yml
+
+configs:
+  prometheus.yml.v1:
+    external: true
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
@@ -44,15 +51,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_prometheus_conf_nfs:
+  nas_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Prometheus-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_prometheus_data_nfs:
+      device: ":/volume1/Prometheus-Configuration"
+      o: "addr=nas-ii.fr33r.com"
+  nas_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Prometheus-Data'
-      o: 'addr=nas.fr33r.com'
+      device: ":/volume1/Prometheus-Data"
+      o: "addr=nas-ii.fr33r.com"
