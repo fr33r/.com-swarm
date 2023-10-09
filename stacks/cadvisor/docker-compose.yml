@@ -1,28 +1,27 @@
 ---
-version: '3.3'
+version: "3.3"
 
 services:
   app:
     # https://github.com/oijkn/Docker-Raspberry-PI-Monitoring/blob/main/docker-compose.yml
     image: gcr.io/cadvisor/cadvisor:${STACK_VERSION:-v0.47.1}
     privileged: true
-    # see: https://github.com/google/cadvisor/issues/3139
-    command: -logtostderr -docker_only --disable_metrics=hugetlb --disable_metrics=referenced_memory
     networks:
       - freer_network
     volumes:
       - /:/rootfs:ro
-      - /var/run:/var/run:rw
+      - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
+      - /etc/machine-id:/etc/machine-id:ro
     devices:
       - /dev/kmsg
     deploy:
       mode: global
       restart_policy:
         condition: on-failure
-        max_attempts: 3 
+        max_attempts: 3
       resources:
         limits:
           memory: 128mb
@@ -31,8 +30,8 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
