@@ -2,58 +2,64 @@
 version: "3.3"
 services:
   db:
-    # https://hub.docker.com/_/mariadb
-    image: mariadb
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    image: mysql:${DB_STACK_VERSION:-8.1.0}
+    command: --default-authentication-plugin=mysql_native_password --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - freer_nextcloud_db_nfs:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
+      - local_mysql_data:/var/lib/mysql
     networks:
       - freer_network
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/nextcloud_db_root_password
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER_FILE=/run/secrets/nextcloud_db_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.labels.mysql == true
       restart_policy:
         condition: on-failure
-        max_attempts: 3 
+        max_attempts: 3
       resources:
         limits:
-          memory: 512mb
+          memory: 2gb
         reservations:
-          memory: 256mb
+          memory: 1gb
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+    secrets:
+      - nextcloud_db_user
+      - nextcloud_db_password
+      - nextcloud_db_root_password
 
   app:
     # https://hub.docker.com/_/nextcloud
-    image: nextcloud
-    depends_on:
-      - db
+    image: nextcloud:${STACK_VERSION:-25.0.13-apache}
     volumes:
-      - freer_nextcloud_nfs:/var/www/html
+      - nas_conf_nfs:/var/www/html/config
+      - nas_data_nfs:/var/www/html/data
     networks:
       - freer_network
     environment:
       - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER_FILE=/run/secrets/nextcloud_db_user
+      - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
+      - MYSQL_HOST=db
+      - REDIS_HOST=cache
     deploy:
       mode: replicated
       replicas: 1
       restart_policy:
         condition: on-failure
-        max_attempts: 3 
+        max_attempts: 3
       resources:
         limits:
           memory: 1gb
@@ -62,8 +68,39 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+
+  cache:
+    image: redis:${CACHE_STACK_VERSION:-7.2.3-alpine3.18}
+    volumes:
+      - nas_redis_data_nfs:/data
+    networks:
+      - freer_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          memory: 512mb
+        reservations:
+          memory: 256mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+
+secrets:
+  nextcloud_db_user:
+    external: true
+  nextcloud_db_password:
+    external: true
+  nextcloud_db_root_password:
+    external: true
 
 # have to reference external network, otherwise a new scoped network is
 # created during stack deploy.
@@ -76,15 +113,27 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nextcloud_nfs:
+  nas_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/nextcloud'
-      o: 'addr=192.168.1.2'
-  freer_nextcloud_db_nfs:
+      device: ":/volume1/Nextcloud-Configuration"
+      o: "addr=nas-ii.fr33r.com"
+  nas_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/home/jon/nfs/exports/nextcloud_db'
-      o: 'addr=192.168.1.2'
+      device: ":/volume1/Nextcloud-Data"
+      o: "addr=nas-ii.fr33r.com"
+  nas_redis_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ":/volume1/Nextcloud-Cache-Data"
+      o: "addr=nas-ii.fr33r.com"
+  local_mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/nextcloud/db/data"
