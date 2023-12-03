@@ -118,6 +118,12 @@ volumes:
       type: nfs
       device: ":/volume1/Nextcloud"
       o: "addr=nas-ii.fr33r.com"
+  nas_redis_data_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ":/volume1/Nextcloud-Cache-Data"
+      o: "addr=nas-ii.fr33r.com"
   local_mysql_data:
     driver: local
     driver_opts:
