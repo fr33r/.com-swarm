@@ -70,6 +70,10 @@ services:
       options:
         gelf-address: "udp://0.0.0.0:12201"
         tag: "{{.Name}}"
+    secrets:
+      - nextcloud_db_user
+      - nextcloud_db_password
+      - nextcloud_db_root_password
 
   cache:
     image: redis:${CACHE_STACK_VERSION:-7.2.3-alpine3.18}
