@@ -48,7 +48,8 @@ services:
       - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
-      - MYSQL_DATABASE=nextcloud
+        # https://github.com/nextcloud/docker/issues/1148#issuecomment-991697378
+      - MYSQL_DATABASE_FILE=/run/secrets/nextcloud_db
       - MYSQL_USER_FILE=/run/secrets/nextcloud_db_user
       - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
       - MYSQL_HOST=db
@@ -94,6 +95,8 @@ services:
         tag: "{{.Name}}"
 
 secrets:
+  nextcloud_db:
+    external: true
   nextcloud_db_user:
     external: true
   nextcloud_db_password:
