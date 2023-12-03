@@ -41,8 +41,7 @@ services:
     # https://hub.docker.com/_/nextcloud
     image: nextcloud:${STACK_VERSION:-25.0.13-apache}
     volumes:
-      - nas_conf_nfs:/var/www/html/config
-      - nas_data_nfs:/var/www/html/data
+      - nas_conf_and_data_nfs:/var/www/html
     networks:
       - freer_network
     environment:
@@ -113,23 +112,11 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  nas_conf_nfs:
+  nas_conf_and_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ":/volume1/Nextcloud-Configuration"
-      o: "addr=nas-ii.fr33r.com"
-  nas_data_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ":/volume1/Nextcloud-Data"
-      o: "addr=nas-ii.fr33r.com"
-  nas_redis_data_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ":/volume1/Nextcloud-Cache-Data"
+      device: ":/volume1/Nextcloud"
       o: "addr=nas-ii.fr33r.com"
   local_mysql_data:
     driver: local
