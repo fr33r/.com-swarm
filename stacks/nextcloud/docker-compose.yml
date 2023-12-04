@@ -107,7 +107,7 @@ services:
       - freer_internal_network
     cap_add:
       - IPC_LOCK
-    port:
+    ports:
       - 3003:3000
       - 3004:3001
     deploy:
