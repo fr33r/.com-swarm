@@ -52,7 +52,7 @@ services:
       - MYSQL_DATABASE_FILE=/run/secrets/nextcloud_db
       - MYSQL_USER_FILE=/run/secrets/nextcloud_db_user
       - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
-      - MYSQL_HOST=db
+      - MYSQL_HOST=db:3306
       - REDIS_HOST=cache
     deploy:
       mode: replicated
