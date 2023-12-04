@@ -54,6 +54,7 @@ services:
       - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
       - MYSQL_HOST=db:3306
       - REDIS_HOST=cache
+      - REDIS_PORT=6379
     deploy:
       mode: replicated
       replicas: 1
