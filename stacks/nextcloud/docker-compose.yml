@@ -41,7 +41,7 @@ services:
     # https://hub.docker.com/_/nextcloud
     image: nextcloud:${STACK_VERSION:-25.0.13-apache}
     volumes:
-      - nas_conf_and_data_nfs:/var/www/html
+      - local_conf_and_data:/var/www/html
     networks:
       - freer_network
     environment:
@@ -58,6 +58,9 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints:
+          - node.labels.cloud == true
       restart_policy:
         condition: on-failure
         max_attempts: 3
@@ -154,12 +157,12 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  nas_conf_and_data_nfs:
+  local_conf_and_data:
     driver: local
     driver_opts:
-      type: nfs
-      device: ":/volume1/Nextcloud"
-      o: "addr=nas-ii.fr33r.com"
+      type: none
+      o: bind
+      device: "/home/nextcloud/app"
   nas_redis_data_nfs:
     driver: local
     driver_opts:
