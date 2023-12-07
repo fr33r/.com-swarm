@@ -39,16 +39,13 @@ services:
       - nextcloud_db_root_password
 
   app:
-    image: lscr.io/linuxserver/nextcloud:${STACK_VERSION:-27.1.4-ls288}
+    # https://hub.docker.com/_/nextcloud
+    image: nextcloud:${STACK_VERSION:-25.0.13-apache}
     volumes:
-      - nas_conf_nfs:/config
-      - nas_data_nfs:/data
+      - nas_conf_and_data_nfs:/var/www/html
     networks:
       - freer_network
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=America/Los_Angeles
       - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
@@ -163,17 +160,11 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  nas_conf_nfs:
+  nas_conf_and_data_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ":/volume1/Nextcloud-Configuration"
-      o: "addr=nas-ii.fr33r.com"
-  nas_data_nfs:
-    driver: local
-    driver_opts:
-      type: nfs
-      device: ":/volume1/Nextcloud-Data"
+      device: ":/volume1/Nextcloud"
       o: "addr=nas-ii.fr33r.com"
   nas_redis_data_nfs:
     driver: local
