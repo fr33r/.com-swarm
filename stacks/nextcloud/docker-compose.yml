@@ -53,9 +53,9 @@ services:
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
         # https://github.com/nextcloud/docker/issues/1148#issuecomment-991697378
-      - MYSQL_DATABASE_FILE=/run/secrets/nextcloud_db
-      - MYSQL_USER_FILE=/run/secrets/nextcloud_db_user
-      - MYSQL_PASSWORD_FILE=/run/secrets/nextcloud_db_password
+      - FILE__MYSQL_DATABASE=/run/secrets/nextcloud_db
+      - FILE__MYSQL_USER=/run/secrets/nextcloud_db_user
+      - FILE__MYSQL_PASSWORD=/run/secrets/nextcloud_db_password
       - MYSQL_HOST=db:${DB_PORT:-3306}
       - REDIS_HOST=cache
       - REDIS_PORT=6379
