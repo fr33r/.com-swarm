@@ -52,7 +52,10 @@ services:
       - NEXTCLOUD_TRUSTED_DOMAINS=${TRUSTED_DOMAINS}
       - OVERWRITEHOST=${PROXY_HOST}
       - OVERWRITEPROTOCOL=https
+      - OVERWRITECLIURL=${CLI_URL}
         # https://github.com/nextcloud/docker/issues/1148#issuecomment-991697378
+      - FILE__NEXTCLOUD_ADMIN_USER=/run/secrets/nextcloud_admin_user
+      - FILE__NEXTCLOUD_ADMIN_PASSWORD=/run/secrets/nextcloud_admin_password
       - FILE__MYSQL_DATABASE=/run/secrets/nextcloud_db
       - FILE__MYSQL_USER=/run/secrets/nextcloud_db_user
       - FILE__MYSQL_PASSWORD=/run/secrets/nextcloud_db_password
@@ -79,6 +82,8 @@ services:
       - nextcloud_db
       - nextcloud_db_user
       - nextcloud_db_password
+      - nextcloud_admin_user
+      - nextcloud_admin_password
 
   cache:
     image: redis:${CACHE_STACK_VERSION:-7.2.3-alpine3.18}
