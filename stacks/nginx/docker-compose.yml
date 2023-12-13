@@ -14,7 +14,7 @@ services:
       mode: global
       restart_policy:
         condition: on-failure
-        max_attempts: 3 
+        max_attempts: 3
       resources:
         limits:
           memory: 64mb
@@ -32,7 +32,7 @@ services:
         target: /etc/nginx/conf.d/blog.fr33r.com.conf
       - source: cams.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/cams.fr33r.com.conf
-      - source: collaboration.fr33r.com.conf.v1
+      - source: collaboration.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/collaboration.fr33r.com.conf
       - source: logs.fr33r.com.conf.v2
         target: /etc/nginx/conf.d/logs.fr33r.com.conf
@@ -73,7 +73,7 @@ configs:
     external: true
   cams.fr33r.com.conf.v2:
     external: true
-  collaboration.fr33r.com.conf.v1:
+  collaboration.fr33r.com.conf.v2:
     external: true
   logs.fr33r.com.conf.v2:
     external: true
