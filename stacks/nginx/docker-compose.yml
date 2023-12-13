@@ -23,8 +23,8 @@ services:
     logging:
       driver: gelf
       options:
-        gelf-address: 'udp://0.0.0.0:12201'
-        tag: '{{.Name}}'
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
     configs:
       - source: admin.fr33r.com.conf.v3
         target: /etc/nginx/conf.d/admin.fr33r.com.conf
