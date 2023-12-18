@@ -113,17 +113,16 @@ services:
         tag: "{{.Name}}"
 
   db_client:
-    image: lscr.io/linuxserver/mysql-workbench:${DB_CLIENT_STACK_VERSION:-8.0.29}
+    # https://hub.docker.com/_/phpmyadmin
+    image: phpmyadmin:${DB_CLIENT_STACK_VERSION:-5.2.1-apache}
     environment:
       - TZ=America/Los_Angeles
+      - PMA_HOST=db
+      - PMA_PORT=${DB_PORT:-3306}
     networks:
       - freer_network
-      - freer_internal_network
-    cap_add:
-      - IPC_LOCK
     ports:
-      - 3003:3000
-      - 3004:3001
+      - 8889:80
     deploy:
       mode: replicated
       replicas: 1
