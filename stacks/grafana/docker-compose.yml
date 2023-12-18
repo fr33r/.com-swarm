@@ -118,6 +118,9 @@ services:
       - nas_mysql_dumps_nfs:/backup
     environment:
       - TIMEZONE=America/Los_Angeles
+      - CONTAINER_ENABLE_MONITORING=FALSE
+      - USER_DBBACKUP=1029 # grafana user on NAS.
+      - GROUP_DBBACKUP=100 # user group on NAS.
       - DB01_TYPE=mysql
       - DB01_HOST=db
       - DB01_NAME_FILE=/run/secrets/grafana_db
