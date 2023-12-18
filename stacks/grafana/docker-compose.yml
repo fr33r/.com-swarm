@@ -125,6 +125,8 @@ secrets:
     external: true
   grafana_admin_password:
     external: true
+  grafana_db:
+    external: true
   grafana_db_user:
     external: true
   grafana_db_password:
