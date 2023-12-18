@@ -81,7 +81,8 @@ services:
       - grafana_db_root_password
 
   db_client:
-    image: :${DB_CLIENT_STACK_VERSION:-5.2.1-apache}
+    # https://hub.docker.com/_/phpmyadmin
+    image: phpmyadmin:${DB_CLIENT_STACK_VERSION:-5.2.1-apache}
     environment:
       - TZ=America/Los_Angeles
       - PMA_HOST=db
