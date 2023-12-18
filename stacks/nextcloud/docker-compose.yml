@@ -144,6 +144,47 @@ services:
         gelf-address: "udp://0.0.0.0:12201"
         tag: "{{.Name}}"
 
+  db_dumper:
+    # https://hub.docker.com/r/tiredofit/db-backup/
+    image: tiredofit/db-backup:${DB_DUMPER_STACK_VERSION:-4.0.32}
+    volumes:
+      - nas_mysql_dumps_nfs:/backup
+    environment:
+      - TIMEZONE=America/Los_Angeles
+      - DB01_TYPE=mysql
+      - DB01_HOST=db
+      - DB01_NAME_FILE=/run/secrets/nextcloud_db
+      - DB01_USER_FILE=/run/secrets/nextcloud_db_user
+      - DB01_PASS_FILE=/run/secrets/nextcloud_db_password
+      - DB01_DUMP_INTERVAL=60 # Backup every 60 minutes
+      - DB01_DUMP_BEGIN=+1 # (override) Backup starts immediately
+      - DB01_CLEANUP_TIME=180 # (override) Cleanup backups they are older than 180 minutes
+      - DB01_CHECKSUM=SHA1 # (override) Create a SHA1 checksum
+      - DB01_COMPRESSION=GZ # (override) Compress with GZIP
+    networks:
+      - freer_network
+      - freer_internal_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          memory: 512mb
+        reservations:
+          memory: 256mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+    secrets:
+      - nextcloud_db
+      - nextcloud_db_user
+      - nextcloud_db_password
+
 secrets:
   nextcloud_db:
     external: true
@@ -184,6 +225,12 @@ volumes:
     driver_opts:
       type: nfs
       device: ":/volume1/Nextcloud-Cache-Data"
+      o: "addr=nas-ii.fr33r.com"
+  nas_mysql_dumps_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ":/volume1/Nextcloud-Database-Backups"
       o: "addr=nas-ii.fr33r.com"
   local_mysql_data:
     driver: local
