@@ -155,6 +155,7 @@ services:
       - GROUP_DBBACKUP=33 # nextcloud group on NAS.
       - DB01_TYPE=mysql
       - DB01_HOST=db
+      - DB01_PORT=${DB_PORT:-3306}
       - DB01_NAME_FILE=/run/secrets/nextcloud_db
       - DB01_USER_FILE=/run/secrets/nextcloud_db_user
       - DB01_PASS_FILE=/run/secrets/nextcloud_db_password
@@ -165,7 +166,6 @@ services:
       - DB01_COMPRESSION=GZ # (override) Compress with GZIP
     networks:
       - freer_network
-      - freer_internal_network
     deploy:
       mode: replicated
       replicas: 1
@@ -208,8 +208,6 @@ secrets:
 # https://docs.docker.com/compose/compose-file/#external
 networks:
   freer_network:
-    external: true
-  freer_internal_network:
     external: true
 
 # have to replicate dependent volume definitions
