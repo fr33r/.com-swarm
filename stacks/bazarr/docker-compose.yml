@@ -3,18 +3,18 @@ version: "3.3"
 services:
   app:
     # https://hub.docker.com/r/linuxserver/bazarr
-    image: linuxserver/bazarr:latest
+    image: linuxserver/bazarr:${STACK_VERSION:-latest}
     networks:
       - freer_network
       - freer_internal_network
     environment:
-      - PUID=1018
-      - PGID=1001
+      - PUID=${BAZARR_PUID}
+      - PGID=${BAZARR_PGID}
       - TZ=America/Los_Angeles
     volumes:
-      - freer_nas_bazarr_conf_nfs:/config
-      - freer_nas_movies_smb:/movies
-      - freer_nas_tv_smb:/tv
+      - nas_conf_nfs:/config
+      - nas_movies_smb:/movies
+      - nas_tv_smb:/tv
     ports:
       - 6767:6767
     deploy:
@@ -50,21 +50,21 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_bazarr_conf_nfs:
+  nas_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Bazarr-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_movies_smb:
+      device: ':/volume1/Bazarr-Configuration'
+      o: 'addr=nas-ii.fr33r.com'
+  nas_movies_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//nas.fr33r.com/movies'
-      o: 'username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=1018,gid=1001'
-  freer_nas_tv_smb:
+      device: '//nas-ii.fr33r.com/movies'
+      o: 'addr=nas-ii.fr33r.com,username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=1018,gid=1001'
+  nas_tv_smb:
     driver: local
     driver_opts:
       type: cifs
-      device: '//nas.fr33r.com/tv'
-      o: 'username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD},uid=1018,gid=1001'
+      device: '//nas-ii.fr33r.com/tv'
+      o: 'addr=nas-ii.fr33r.com,username=${TV_SMB_USERNAME},password=${TV_SMB_PASSWORD},uid=${BAZARR_PUID},gid=${BAZARR_PGID}'
