@@ -43,6 +43,7 @@ services:
       - grafana_admin_password
       - grafana_db_user
       - grafana_db_password
+
   db:
     image: mysql:${DB_STACK_VERSION:-8.1.0}
     command: --default-authentication-plugin=mysql_native_password
@@ -79,10 +80,86 @@ services:
       - grafana_db_password
       - grafana_db_root_password
 
+  db_client:
+    # https://hub.docker.com/_/phpmyadmin
+    image: phpmyadmin:${DB_CLIENT_STACK_VERSION:-5.2.1-apache}
+    environment:
+      - TZ=America/Los_Angeles
+      - PMA_HOST=db
+      - PMA_PORT=3306
+    networks:
+      - freer_network
+    ports:
+      - 8888:80
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.mysql == true
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          memory: 512mb
+        reservations:
+          memory: 256mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+
+  db_dumper:
+    # https://hub.docker.com/r/tiredofit/db-backup/
+    image: tiredofit/db-backup:${DB_DUMPER_STACK_VERSION:-4.0.32}
+    volumes:
+      - nas_mysql_dumps_nfs:/backup
+    environment:
+      - TIMEZONE=America/Los_Angeles
+      - CONTAINER_ENABLE_MONITORING=FALSE
+      - USER_DBBACKUP=1029 # grafana user on NAS.
+      - GROUP_DBBACKUP=100 # user group on NAS.
+      - DB01_TYPE=mysql
+      - DB01_HOST=db
+      - DB01_NAME_FILE=/run/secrets/grafana_db
+      - DB01_USER_FILE=/run/secrets/grafana_db_user
+      - DB01_PASS_FILE=/run/secrets/grafana_db_password
+      - DB01_DUMP_INTERVAL=60 # Backup every 60 minutes
+      - DB01_DUMP_BEGIN=+1 # (override) Backup starts immediately
+      - DB01_CLEANUP_TIME=180 # (override) Cleanup backups they are older than 180 minutes
+      - DB01_CHECKSUM=SHA1 # (override) Create a SHA1 checksum
+      - DB01_COMPRESSION=GZ # (override) Compress with GZIP
+    networks:
+      - freer_network
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+      resources:
+        limits:
+          memory: 512mb
+        reservations:
+          memory: 256mb
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://0.0.0.0:12201"
+        tag: "{{.Name}}"
+    secrets:
+      - grafana_db
+      - grafana_db_user
+      - grafana_db_password
+
 secrets:
   grafana_admin_user:
     external: true
   grafana_admin_password:
+    external: true
+  grafana_db:
     external: true
   grafana_db_user:
     external: true
@@ -107,6 +184,12 @@ volumes:
     driver_opts:
       type: nfs
       device: ":/volume1/Grafana-Configuration"
+      o: "addr=nas-ii.fr33r.com"
+  nas_mysql_dumps_nfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      device: ":/volume1/Grafana-Database-Backups"
       o: "addr=nas-ii.fr33r.com"
   local_mysql_data:
     driver: local
