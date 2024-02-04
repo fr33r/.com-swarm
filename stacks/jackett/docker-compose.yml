@@ -2,16 +2,16 @@
 version: '3.3'
 services:
   app:
-    image: lscr.io/linuxserver/jackett:latest
+    image: lscr.io/linuxserver/jackett:${STACK_VERSION}
     networks:
       - freer_network
     environment:
-      - PUID=1006
-      - PGID=1001
+      - PUID=${JACKETT_PUID}
+      - PGID=${JACKETT_PGID}
       - TZ=America/Los_Angeles
     volumes:
-      - freer_nas_jackett_conf_nfs:/config
-      - freer_nas_media_downloads_nfs:/downloads
+      - nas_conf_nfs:/config
+      - nas_media_downloads_nfs:/downloads
     ports:
       - 9117:9117
     deploy:
@@ -45,15 +45,15 @@ networks:
 # to ensure all nodes are setup correctly.
 # https://docs.docker.com/compose/compose-file/#volumes-top-level-element
 volumes:
-  freer_nas_jackett_conf_nfs:
+  nas_conf_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Jackett-Configuration'
-      o: 'addr=nas.fr33r.com'
-  freer_nas_media_downloads_nfs:
+      device: ':/volume1/Jackett-Configuration'
+      o: 'addr=nas-ii.fr33r.com'
+  nas_media_downloads_nfs:
     driver: local
     driver_opts:
       type: nfs
-      device: ':/export/Media-Downloads'
-      o: 'addr=nas.fr33r.com'
+      device: ':/volume1/Media-Downloads'
+      o: 'addr=nas-ii.fr33r.com'
