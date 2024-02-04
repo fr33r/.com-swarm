@@ -61,7 +61,7 @@ volumes:
     driver_opts:
       type: cifs
       device: '//nas-ii.fr33r.com/movies'
-      o: 'addr=nas-ii.fr33r.com,username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=1018,gid=1001'
+      o: 'addr=nas-ii.fr33r.com,username=${MOVIES_SMB_USERNAME},password=${MOVIES_SMB_PASSWORD},uid=${BAZARR_PUID},gid=${BAZARR_PGID}'
   nas_tv_smb:
     driver: local
     driver_opts:
